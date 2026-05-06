@@ -5,7 +5,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, useScroll, useSpring, AnimatePresence } from 'motion/react';
-import { Heart, Coffee, Sparkles, Star, Navigation2, X, User, MessageCircle, Home, Image as ImageIcon, Send, ArrowRight } from 'lucide-react';
+import { Heart, Coffee, Sparkles, Music, Star, Navigation2, X, User, MessageCircle, Home, Image as ImageIcon, Send, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 // Custom Ring Icon for the Proposal tab
@@ -48,15 +48,6 @@ const TIMELINE_EVENTS = [
     secretNote: "Trinita, whenever I feel low or lose my way, I just look into your eyes. They are my sanctuary. You don't realize how much strength you give me just by being you. Your gaze is like a silent promise that everything will be okay. It's because of you that I've found the confidence to be the man I am today. You are my power, my anchor, and my greatest motivation. I love you, Munuu. ❤️"
   },
   {
-    title: "Our Silent Promises 🌾✨",
-    date: "April - May 2025",
-    description: "The evenings that built our foundation. Walking hand in hand through the fields, sharing those little talks that meant everything.",
-    icon: Navigation2,
-    image: "https://i.postimg.cc/3JK7Ch5V/IMG-20250402-WA0012.jpg",
-    extraImages: ["https://i.postimg.cc/rF8cCT2L/IMG20250709183542.jpg"],
-    secretNote: "Before we were even together, we were already building a world. Those evening walks in the field, holding your hand for the first time, those choti choti baate... they hit me so hard now. Every step we took was a silent promise to never let go. I didn't know it then, but I was already home. You made those simple walks the most magical moments of my life. I love you, Munuu. ❤️"
-  },
-  {
     title: "Me Annoying You 😜",
     date: "December 23, 2025",
     description: "They say if you don't annoy your partner, are you even in love? These moments are some of my favorites because even when you're mad at me, you're the most adorable person on Earth.",
@@ -64,6 +55,15 @@ const TIMELINE_EVENTS = [
     image: "https://i.postimg.cc/vmy6SfZp/Screenshot-2025-12-23-12-28-22-43-8c9f6584ca98fa3eab4829abe86aac46.jpg",
     extraImages: ["https://i.postimg.cc/QMDWn1d2/Screenshot-2025-12-23-12-29-09-19-8c9f6584ca98fa3eab4829abe86aac46.jpg"],
     secretNote: "The only thing I love more than annoying you is loving you. I promise to keep bothering you with my love for the rest of our lives! ❤️😂"
+  },
+  {
+    title: "Our Silent Promises 🌾✨",
+    date: "April - May 2025",
+    description: "The evenings that built our foundation. Walking hand in hand through the fields, sharing those little talks that meant everything.",
+    icon: Navigation2,
+    image: "https://i.postimg.cc/3JK7Ch5V/IMG-20250402-WA0012.jpg",
+    extraImages: ["https://i.postimg.cc/rF8cCT2L/IMG20250709183542.jpg"],
+    secretNote: "Before we were even together, we were already building a world. Those evening walks in the field, holding your hand for the first time, those choti choti baate... they hit me so hard now. Every step we took was a silent promise to never let go. I didn't know it then, but I was already home. You made those simple walks the most magical moments of my life. I love you, Munuu. ❤️"
   },
   {
     date: "Feb 14, 2026",
@@ -116,10 +116,13 @@ function SpiralNotebook() {
   return (
     <div className="relative w-full max-w-4xl mx-auto aspect-[3/4] md:aspect-[4/5] group select-none perspective-2000">
       {/* Real-style Spiral Spine (Static - High Detail) */}
-      <div className="absolute left-3 top-6 bottom-6 w-6 z-50 pointer-events-none flex flex-col justify-between py-2">
-        {Array.from({ length: 15 }).map((_, i) => (
-          <div key={i} className="flex items-center -ml-1 relative">
-            <div className="w-6 h-1.5 bg-gradient-to-r from-gray-500 via-gray-200 to-gray-600 rounded-full border border-gray-400/20 shadow-sm" />
+      <div className="absolute left-4 top-8 bottom-8 w-8 z-50 pointer-events-none flex flex-col justify-between py-4">
+        {Array.from({ length: 18 }).map((_, i) => (
+          <div key={i} className="flex items-center -ml-2 relative">
+            {/* The metallic ring loop - smaller and more subtle */}
+            <div className="w-8 h-2 bg-gradient-to-r from-gray-500 via-gray-200 to-gray-600 rounded-full border border-gray-400/20 shadow-[1px_1px_2px_rgba(0,0,0,0.2)] ring-1 ring-white/10" />
+            {/* Tiny hole in paper effect */}
+            <div className="absolute left-6 w-1.5 h-1.5 bg-black/20 rounded-full blur-[0.3px]" />
           </div>
         ))}
       </div>
@@ -157,20 +160,20 @@ function SpiralNotebook() {
           animate={{ rotateY: 0, opacity: 1, originX: "0%" }}
           exit={{ rotateY: direction > 0 ? -45 : 45, opacity: 0, originX: "0%" }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="w-full h-full bg-[#fcf9f2] rounded-r-[3rem] rounded-l-md shadow-xl border border-gray-200/50 relative overflow-hidden flex flex-col p-6 pl-12 pr-6 cursor-default"
+          className="w-full h-full bg-[#fcf9f2] rounded-r-[4rem] rounded-l-md shadow-2xl border border-gray-200/50 relative overflow-hidden flex flex-col p-10 pl-20 pr-10 cursor-default"
           style={{
             backgroundImage: `
-              linear-gradient(90deg, transparent 40px, rgba(219, 109, 123, 0.1) 40px, rgba(219, 109, 123, 0.1) 42px, transparent 42px),
+              linear-gradient(90deg, transparent 66px, rgba(219, 109, 123, 0.1) 66px, rgba(219, 109, 123, 0.1) 68px, transparent 68px),
               linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px)
             `,
-            backgroundSize: '100% 1.6em'
+            backgroundSize: '100% 1.8em'
           }}
         >
           {/* Subtle Paper Texture */}
           <div className="absolute inset-0 bg-white/40 opacity-10 pointer-events-none" style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/natural-paper.png')" }} />
           
-          <div className="flex-1 flex flex-col justify-start pt-2 overflow-hidden">
-             <p className="font-handwriting text-sm sm:text-base text-gray-800 leading-[1.6em] whitespace-pre-wrap tracking-tight text-justify">
+          <div className="flex-1 flex flex-col justify-start pt-4 overflow-hidden">
+             <p className="font-handwriting text-base md:text-lg lg:text-xl text-gray-800 leading-[1.8em] whitespace-pre-wrap drop-shadow-sm tracking-tight text-justify">
                {LETTER_PAGES[page]}
              </p>
           </div>
@@ -181,9 +184,9 @@ function SpiralNotebook() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Stacked Pages depth */}
-      <div className="absolute -right-2 top-2 bottom-2 w-full h-full bg-white/95 -z-10 rounded-r-[3rem] border-r border-gray-300 shadow-sm" />
-      <div className="absolute -right-4 top-4 bottom-4 w-full h-full bg-[#f8f8f8] -z-20 rounded-r-[3rem] border-r border-gray-200 shadow-md" />
+      {/* Stacked Pages depth (Static - Realistic layering) */}
+      <div className="absolute -right-3 top-3 bottom-3 w-full h-full bg-white/95 -z-10 rounded-r-[4rem] border-r border-gray-300 shadow-sm" />
+      <div className="absolute -right-6 top-6 bottom-6 w-full h-full bg-[#f8f8f8] -z-20 rounded-r-[4rem] border-r border-gray-200 shadow-md" />
     </div>
   );
 }
@@ -356,166 +359,507 @@ export default function App() {
   };
 
   return (
-    <div className="h-[100dvh] w-full bg-[#fdf2f2] font-sans text-gray-900 selection:bg-rose-200 overflow-hidden relative flex flex-col">
+    <div className="h-[100dvh] bg-[#fdf2f2] font-sans text-gray-900 overflow-hidden flex flex-col selection:bg-rose-200">
       <FloatingHearts />
-      
-      {/* Fixed Header */}
-      <header className="w-full px-4 py-4 z-50 shrink-0">
-        <div className="bg-white/70 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(255,182,193,0.1)] rounded-[2rem] px-5 py-3 flex items-center justify-between">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-3"
-          >
-            <div className="w-9 h-9 bg-rose-500 rounded-full flex items-center justify-center shadow-lg shadow-rose-200">
-              <Heart size={18} className="text-white" fill="currentColor" />
+ 
+      {/* Floating Header - Frameless & Minimal */}
+      <header className="fixed top-4 left-0 right-0 z-50 px-6 flex items-center justify-between max-w-lg mx-auto pointer-events-none">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-3 pointer-events-auto"
+        >
+          <div className="w-10 h-10 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center shadow-[0_4px_24px_rgba(255,182,193,0.1)] border border-white/40">
+            <motion.div
+              animate={{ scale: [1, 1.15, 1], rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+            >
+              <Heart size={18} className="text-rose-500" fill="currentColor" />
+            </motion.div>
+          </div>
+          <div className="flex flex-col">
+            <h1 className="font-serif text-xl font-bold text-gray-800 drop-shadow-sm leading-none mb-0.5">
+              Jyotimoy & Trinita
+            </h1>
+            <div className="flex items-center gap-1.5">
+              <span className="w-1 h-1 rounded-full bg-rose-400 animate-pulse" />
+              <p className="text-[8px] text-rose-500 font-bold tracking-[0.2em] uppercase opacity-90 leading-none">
+                365 Days of Forever
+              </p>
             </div>
-            <div>
-              <h1 className="font-serif text-lg font-bold text-gray-800 leading-tight">Jyotimoy & Trinita</h1>
-              <p className="text-[9px] text-rose-400 font-medium tracking-[0.15em] uppercase">365 Days of Forever</p>
-            </div>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-rose-50 px-3 py-1 rounded-full border border-rose-100"
-          >
-            <span className="text-rose-500 text-[10px] font-bold tracking-wider">ANNIVERSARY</span>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
+        
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="pointer-events-auto"
+        >
+          <div className="bg-white/30 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/40 shadow-[0_4px_24px_rgba(255,182,193,0.1)]">
+            <span className="text-rose-600 text-[8px] font-black tracking-widest uppercase">Anniversary</span>
+          </div>
+        </motion.div>
       </header>
-
-      {/* Main Content Area */}
-      <main className="flex-1 w-full relative overflow-hidden px-4">
+ 
+      {/* Main Content Area adjustments for floating header */}
+      <main className="flex-1 relative pt-16 px-4 max-w-md mx-auto w-full h-full overflow-hidden">
         
         {activeTab === 'discover' && (
-          <div className="h-full flex flex-col justify-between py-2 pb-20">
-            {/* Card Stack */}
-            <div className="flex-1 flex items-center justify-center relative min-h-0 py-4">
-              <div className="relative w-full max-w-[320px] aspect-[3/4] sm:max-w-[360px]">
-                <AnimatePresence mode="popLayout">
-                  {TIMELINE_EVENTS.map((event, i) => (
-                    i === currentCard && (
-                      <motion.div
-                        key={i}
-                        initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                        animate={{ scale: 1, opacity: 1, y: 0, rotate: i % 2 === 0 ? -1 : 1 }}
-                        exit={{ x: 300, opacity: 0, rotate: 10 }}
-                        onClick={() => setIsFlipped(!isFlipped)}
-                        className="absolute inset-0 z-10 cursor-pointer"
-                      >
-                        <div className="h-full w-full rounded-[2.5rem] overflow-hidden card-shadow relative bg-white border-4 border-white">
-                          <AnimatePresence>
-                            {isFlipped && event.secretNote && (
-                              <motion.div 
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                className="absolute inset-0 z-50 bg-rose-500/95 backdrop-blur-md flex items-center justify-center p-8 text-center"
-                              >
-                                 <motion.div initial={{ y: 20 }} animate={{ y: 0 }}>
-                                    <Heart size={32} className="text-white fill-current mx-auto mb-4" />
-                                    <p className="font-cursive text-xl text-white leading-relaxed">"{event.secretNote}"</p>
-                                 </motion.div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
+          <div className="relative h-[58vh] mt-2">
+            <AnimatePresence mode="popLayout">
+              {TIMELINE_EVENTS.map((event, i) => (
+                i === currentCard && (
+                  <motion.div
+                    key={i}
+                    initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                    animate={{ scale: 1, opacity: 1, y: 0, rotate: i % 2 === 0 ? -2 : 2 }}
+                    exit={{ x: 300, opacity: 0, rotate: 20 }}
+                    onClick={() => setIsFlipped(!isFlipped)}
+                    className="absolute inset-0 z-10 cursor-pointer"
+                  >
+                      <div className="h-full w-full rounded-[2.5rem] overflow-hidden card-shadow relative bg-white">
+                        {/* Favorite Star Badge */}
+                        {favorites.includes(currentCard) && (
+                          <motion.div 
+                            initial={{ scale: 0, rotate: -45 }}
+                            animate={{ scale: 1, rotate: 0 }}
+                            className="absolute top-6 right-6 z-50 bg-yellow-400 text-white p-2 rounded-full shadow-lg border-2 border-white"
+                          >
+                            <Star size={20} fill="currentColor" />
+                          </motion.div>
+                        )}
 
-                          <div className="relative w-full h-full overflow-hidden">
+                        {/* Secret Note Overlay */}
+                        <AnimatePresence>
+                          {isFlipped && event.secretNote && (
+                            <motion.div 
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              className="absolute inset-0 z-50 bg-rose-500/90 backdrop-blur-md flex items-center justify-center p-12 text-center"
+                            >
+                               <motion.div
+                                 initial={{ y: 20 }}
+                                 animate={{ y: 0 }}
+                               >
+                                  <Heart size={40} className="text-white fill-current mx-auto mb-6" />
+                                  <p className="font-cursive text-3xl text-white leading-relaxed">
+                                    "{event.secretNote}"
+                                  </p>
+                               </motion.div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+
+                        {event.extraImages ? (
+                          <div className="relative w-full h-full p-4 flex items-center justify-center bg-rose-50 overflow-hidden" style={{ perspective: "1200px" }}>
+                             {/* The Collage Layout - Smooth swap with keyframed zIndex cross-fade */}
+                             <motion.div 
+                               initial={{ rotate: -5, x: -20 }}
+                               animate={{ 
+                                 rotate: [-6, -4, -6],
+                                 x: (subImageIndex % 2 === 0) ? -28 : -38,
+                                 y: (subImageIndex % 2 === 0) ? -5 : 5,
+                                 zIndex: (subImageIndex % 2 === 0) ? [0, 0, 20, 20] : [20, 20, 0, 0],
+                                 scale: (subImageIndex % 2 === 0) ? [0.92, 0.94, 1, 1] : [1, 1, 0.94, 0.92],
+                                 opacity: (subImageIndex % 2 === 0) ? [0.75, 0.85, 1, 1] : [1, 1, 0.85, 0.75]
+                               }}
+                               transition={{ 
+                                 rotate: { duration: 15, repeat: Infinity, ease: "easeInOut" },
+                                 x: { duration: 5, ease: "anticipate" },
+                                 y: { duration: 5, ease: "anticipate" },
+                                 zIndex: { duration: 5, times: [0, 0.45, 0.55, 1] },
+                                 scale: { duration: 5, ease: "easeInOut" },
+                                 opacity: { duration: 5, ease: "easeInOut" }
+                               }}
+                               className="absolute w-[82%] h-[88%] bg-white p-3 pb-12 rounded-sm shadow-xl"
+                             >
+                               <motion.img 
+                                 animate={{ scale: [1, 1.05, 1], x: [0, -2, 0] }}
+                                 transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                                 src={event.image} 
+                                 className="w-full h-full object-cover object-center" 
+                               />
+                             </motion.div>
+                             
+                             <motion.div 
+                               initial={{ rotate: 5, x: 20 }}
+                               animate={{ 
+                                 rotate: [4, 6, 4],
+                                 x: (subImageIndex % 2 === 1) ? 28 : 38,
+                                 y: (subImageIndex % 2 === 1) ? 5 : -5,
+                                 zIndex: (subImageIndex % 2 === 1) ? [0, 0, 20, 20] : [20, 20, 0, 0],
+                                 scale: (subImageIndex % 2 === 1) ? [0.92, 0.94, 1, 1] : [1, 1, 0.94, 0.92],
+                                 opacity: (subImageIndex % 2 === 1) ? [0.75, 0.85, 1, 1] : [1, 1, 0.85, 0.75]
+                               }}
+                               transition={{ 
+                                 rotate: { duration: 14, repeat: Infinity, ease: "easeInOut" },
+                                 x: { duration: 5, ease: "anticipate" },
+                                 y: { duration: 5, ease: "anticipate" },
+                                 zIndex: { duration: 5, times: [0, 0.45, 0.55, 1] },
+                                 scale: { duration: 5, ease: "easeInOut" },
+                                 opacity: { duration: 5, ease: "easeInOut" }
+                               }}
+                               className="absolute w-[82%] h-[88%] bg-white p-3 pb-12 rounded-sm shadow-2xl"
+                             >
+                               <motion.img 
+                                 animate={{ scale: [1.05, 1, 1.05], y: [0, -2, 0] }}
+                                 transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                                 src={event.extraImages[0]} 
+                                 className="w-full h-full object-cover object-center" 
+                               />
+                               <div className="absolute top-2 right-2 bg-rose-500 rounded-lg p-1">
+                                  <Heart size={12} className="text-white fill-current" />
+                               </div>
+                             </motion.div>
+                             
+                             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent z-30" />
+                          </div>
+                        ) : (
+                          <>
                             <motion.img 
-                              animate={{ scale: [1, 1.1, 1] }} 
-                              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                              animate={{ 
+                                scale: [1, 1.15, 1],
+                                x: [0, -10, 0],
+                                y: [0, -5, 0]
+                              }}
+                              transition={{ 
+                                duration: 15, 
+                                repeat: Infinity, 
+                                ease: "linear" 
+                              }}
                               src={event.image} 
+                              alt={event.title} 
                               className="w-full h-full object-cover" 
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                            <div className="absolute bottom-0 left-0 right-0 p-6 text-white z-40 text-left">
-                              <h2 className="text-2xl font-bold mb-1 font-serif line-clamp-1">{event.title}</h2>
-                              <p className="text-[11px] text-gray-200 mb-3 line-clamp-2">{event.description}</p>
-                              <div className="flex items-center gap-2">
-                                <span className="w-6 h-6 rounded-full bg-rose-500 flex items-center justify-center">
-                                  <event.icon size={10} className="text-white" />
-                                </span>
-                                <span className="text-[10px] opacity-70 font-medium">{event.date}</span>
-                              </div>
-                            </div>
+                          </>
+                        )}
+                        
+                        {/* Interactive Glare Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-30 pointer-events-none" />
+                        
+                        <div className="absolute bottom-0 left-0 right-0 p-8 text-white z-40">
+                          <h2 className="text-3xl font-bold mb-2 font-serif">{event.title}</h2>
+                          <div className="max-h-24 overflow-y-auto custom-scrollbar mb-4 pr-2">
+                            <p className="text-sm text-gray-200 leading-relaxed">{event.description}</p>
+                          </div>
+                          
+                          <div className="flex items-center gap-3">
+                            <span className="w-8 h-8 rounded-full bg-rose-500 flex items-center justify-center">
+                              <event.icon size={14} className="text-white" />
+                            </span>
+                            <span className="text-xs opacity-70 font-medium">{event.date}</span>
                           </div>
                         </div>
-                      </motion.div>
-                    )
-                  ))}
-                </AnimatePresence>
-
-                <div className="absolute bottom-[-15px] left-1/2 -translate-x-1/2 flex items-center gap-6 z-20">
-                  <button onClick={() => setCurrentCard((prev) => (prev - 1 + TIMELINE_EVENTS.length) % TIMELINE_EVENTS.length)} className="w-11 h-11 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-400 border border-gray-100">
-                    <X size={18} />
-                  </button>
-                  <button onClick={() => setCurrentCard((prev) => (prev + 1) % TIMELINE_EVENTS.length)} className="w-14 h-14 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 shadow-xl flex items-center justify-center text-white">
-                    <Heart size={26} fill="currentColor" />
-                  </button>
-                </div>
-              </div>
+                    </div>
+                  </motion.div>
+                )
+              ))}
+            </AnimatePresence>
+            
+            {/* Action Buttons (Inspired by Discovery Screen in image) */}
+            <div className="absolute bottom-[-10px] left-0 right-0 flex justify-center items-center gap-6 z-20">
+              <button 
+                onClick={() => setCurrentCard((prev) => (prev - 1 + TIMELINE_EVENTS.length) % TIMELINE_EVENTS.length)}
+                className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-400 border border-gray-100 hover:bg-gray-50 transition-colors"
+                title="Previous Memory"
+              >
+                <X size={24} />
+              </button>
+              <button 
+                onClick={() => {
+                  setFavorites(prev => 
+                    prev.includes(currentCard) 
+                      ? prev.filter(id => id !== currentCard)
+                      : [...prev, currentCard]
+                  );
+                }}
+                className={`w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center border border-gray-100 transition-all ${favorites.includes(currentCard) ? 'text-yellow-500' : 'text-gray-300'}`}
+                title={favorites.includes(currentCard) ? "Remove from Favorites" : "Add to Favorites"}
+              >
+                <Star size={24} fill={favorites.includes(currentCard) ? "currentColor" : "none"} />
+              </button>
+              <button 
+                onClick={() => setCurrentCard((prev) => (prev + 1) % TIMELINE_EVENTS.length)}
+                className="w-20 h-20 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 shadow-xl shadow-rose-300 flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform"
+                title="Next Memory"
+              >
+                <Heart size={32} fill="currentColor" />
+              </button>
             </div>
 
-            <div className="pb-4">
-               <motion.div animate={{ opacity: 1 }} className="mx-auto w-fit glass px-5 py-3 rounded-2xl border border-white/50 shadow-sm">
-                  <div className="flex items-center gap-3">
+            {/* Live Counter (Feature 2) */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="absolute bottom-[-160px] left-0 right-0 text-center pb-8"
+            >
+               <div className="inline-block glass px-6 py-4 rounded-3xl border border-white/50 shadow-sm">
+                  <p className="text-[10px] text-rose-400 font-bold uppercase tracking-[0.2em] mb-3">Our Time Together</p>
+                  <motion.div 
+                    animate={isCelebration ? { 
+                      scale: [1, 1.05, 1],
+                      boxShadow: ["0 0 0px rgba(255,20,147,0)", "0 0 20px rgba(255,20,147,0.5)", "0 0 0px rgba(255,20,147,0)"]
+                    } : {}}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className={`flex items-center justify-center gap-4 relative ${isCelebration ? 'bg-rose-50/50 p-2 rounded-2xl' : ''}`}
+                  >
                      <TimeUnit value={timeElapsed.years} label="Yrs" />
                      <TimeUnit value={timeElapsed.months} label="Mts" />
                      <TimeUnit value={timeElapsed.days} label="Dys" />
-                     <div className="w-px h-5 bg-rose-100" />
+                     <div className="w-px h-8 bg-rose-100" />
                      <TimeUnit value={timeElapsed.hours} label="Hrs" />
                      <TimeUnit value={timeElapsed.minutes} label="Min" />
                      <TimeUnit value={timeElapsed.seconds} label="Sec" />
-                  </div>
-               </motion.div>
-            </div>
+                     
+                     {isCelebration && (
+                       <motion.div 
+                         initial={{ opacity: 0, scale: 0.5, y: 10 }}
+                         animate={{ opacity: 1, scale: 1, y: 0 }}
+                         className="absolute -top-10 inset-x-0"
+                       >
+                         <div className="bg-rose-500 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg flex items-center justify-center gap-2 mx-auto w-fit whitespace-nowrap">
+                           <Sparkles size={10} /> HAPPY 1st ANNIVERSARY! <Sparkles size={10} />
+                         </div>
+                       </motion.div>
+                     )}
+                  </motion.div>
+               </div>
+            </motion.div>
           </div>
         )}
 
         {activeTab === 'letter' && (
-          <div className="h-full flex flex-col justify-center items-center py-2 pb-24">
-             <div className="text-center mb-4 shrink-0">
-                <h3 className="font-serif text-xl font-bold text-rose-600">Anniversary Letter ❤️</h3>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="py-12 px-2"
+          >
+             <div className="text-center mb-8">
+                <h3 className="font-serif text-3xl font-bold text-rose-600 mb-2">Anniversary Letter for my Heart ❤️</h3>
+                <p className="text-rose-400 italic text-sm">(Click the arrows to flip the pages!)</p>
              </div>
-             <div className="w-full max-w-[320px] flex-1 min-h-0 flex items-center justify-center">
-                <SpiralNotebook />
-             </div>
-          </div>
+             
+             <SpiralNotebook />
+
+             <motion.div 
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1 }}
+               transition={{ delay: 1 }}
+               className="mt-12 flex justify-center"
+             >
+                <div className="bg-white/60 backdrop-blur-md p-6 rounded-[2rem] border-2 border-white shadow-xl flex items-center gap-4 max-w-xs mx-auto">
+                  <span className="text-rose-500 bg-rose-50 p-3 rounded-2xl shadow-inner">
+                    <Heart size={24} fill="currentColor" />
+                  </span>
+                  <p className="text-sm text-rose-800 font-serif italic font-semibold leading-tight">
+                    "Every single page holds a piece of my heart... just for you."
+                  </p>
+                </div>
+             </motion.div>
+          </motion.div>
         )}
 
         {activeTab === 'profile' && (
-          <div className="h-full flex flex-col justify-center items-center py-2 pb-24 px-4 overflow-hidden">
+          <div className="py-2 flex flex-col items-center justify-center h-full max-h-full relative overflow-hidden">
             {proposalStatus !== 'accepted' ? (
-              <div className="w-full flex flex-col items-center">
-                <div className="text-center mb-4">
-                  <h2 className="text-2xl font-bold font-serif text-gray-800">The Big Question</h2>
-                </div>
-                <div className="relative mb-6 pt-2">
-                  <div className="w-48 h-48 relative">
-                    <img src="https://i.postimg.cc/Z59t78Fd/cat.png" className="w-full h-full object-contain filter drop-shadow-xl" alt="Cat" />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="w-full max-w-md flex flex-col items-center relative"
+              >
+                {/* Immersive Background for the 'Stage' */}
+                <div className="absolute inset-x-0 -top-20 -bottom-20 bg-gradient-to-b from-rose-50/50 to-transparent rounded-[3rem] -z-10" />
+
+                {/* The Cat - Talking Tom Style */}
+                <div className="relative mb-6 group cursor-pointer">
+                  <motion.div
+                    animate={{ 
+                      y: [0, -6, 0],
+                      scaleX: [1, 1.02, 1],
+                      scaleY: [1, 0.98, 1],
+                      rotate: noClicks > 0 ? [0, 5, -5, 0] : [0, 2, -2, 0]
+                    }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    className="w-52 h-52 relative"
+                  >
+                    {/* Shadow underneath */}
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-32 h-6 bg-black/5 blur-2xl rounded-full" />
+                    
+                    {/* High quality 3D-style Ginger Cat (User's cat.png) */}
+                    <img 
+                      src="https://i.postimg.cc/Z59t78Fd/cat.png" 
+                      className={`w-full h-full object-contain filter drop-shadow-2xl transition-all duration-300 ${noClicks > 0 ? 'scale-110 rotate-3' : 'hover:scale-105'}`}
+                      alt="The Proposal Cat"
+                    />
+
+                    {/* Animated Rose - Placed in the Cat's hand (Top Left Paw) */}
+                    <motion.div
+                      animate={{ 
+                        rotate: [0, 15, -15, 0],
+                        y: [0, -10, 0],
+                        scale: [1, 1.1, 1]
+                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="absolute top-2 left-0 text-5xl drop-shadow-lg z-20"
+                    >
+                      🌹
+                    </motion.div>
+                  </motion.div>
+                  
+                  {/* Speech Bubble - Modern & Dynamic */}
+                  <motion.div 
+                    initial={{ scale: 0, opacity: 0, y: 20 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    key={catDialogue}
+                    className="absolute -top-24 -right-1 bg-white p-4 rounded-[1.5rem] rounded-bl-none shadow-xl border-2 border-rose-50 max-w-[170px] z-30"
+                  >
+                    <div className="relative">
+                      <p className="text-[11px] font-bold text-gray-800 leading-snug italic">
+                        "{catDialogue}"
+                      </p>
+                      <div className="absolute -bottom-6 -left-6 w-4 h-4 bg-white border-l-2 border-b-2 border-rose-50 -rotate-45" />
+                    </div>
+                  </motion.div>
+
+                  {/* Talking Tom 'Mic' Icon Indicator */}
+                  <div className="absolute -left-12 top-1/2 -translate-y-1/2">
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                      className="w-8 h-8 rounded-full bg-rose-400 flex items-center justify-center text-white"
+                    >
+                      <Heart size={14} fill="currentColor" />
+                    </motion.div>
                   </div>
-                  <motion.div key={catDialogue} initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute -top-10 -right-2 bg-white p-2 rounded-xl rounded-bl-none shadow-lg border border-rose-100 max-w-[120px] z-30">
-                    <p className="text-[9px] font-bold text-gray-800 leading-tight italic">"{catDialogue}"</p>
+                </div>
+
+                <div className="text-center mb-4 px-6">
+                  <h2 className="text-2xl font-bold font-serif text-gray-800 mb-0.5 tracking-tight">The Big Question</h2>
+                  <p className="text-rose-400 font-medium text-[10px] italic leading-none">Wait for it... he's really nervous! 🤭</p>
+                </div>
+
+                {/* Interactive Buttons */}
+                <div className="w-full space-y-3 px-6 relative pb-4 flex flex-col items-center max-w-[260px]">
+                  {/* Fixed Glowing YES Button - Always stays in center */}
+                  <motion.button
+                    animate={{ 
+                      scale: [1, 1.05, 1],
+                      boxShadow: [
+                        "0 0 15px rgba(244, 63, 94, 0.3)",
+                        "0 0 30px rgba(244, 63, 94, 0.5)",
+                        "0 0 15px rgba(244, 63, 94, 0.3)"
+                      ]
+                    }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    whileHover={{ scale: 1.05, rotate: 1 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleYesClick}
+                    className="w-full py-4 bg-gradient-to-r from-rose-500 via-pink-600 to-rose-500 bg-[length:200%_auto] text-white rounded-[2rem] font-bold text-xl shadow-xl border-[3px] border-white transform-gpu relative overflow-hidden z-50 animate-gradient"
+                  >
+                    <span className="relative z-10 drop-shadow-lg">YES, I DO! 💍</span>
+                    <motion.div 
+                      className="absolute inset-0 bg-white/20"
+                      animate={{ x: ['-100%', '100%'] }}
+                      transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                    />
+                  </motion.button>
+ 
+                  {/* Jumping NO Button - Only this one moves */}
+                  <motion.div
+                    animate={{ 
+                      x: noClicks > 0 ? noBtnPos.x : 0, 
+                      y: noClicks > 0 ? noBtnPos.y : 0,
+                      rotate: noClicks > 0 ? noBtnPos.rotate : 0
+                    }}
+                    transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                    className="w-full"
+                  >
+                    <motion.button
+                      animate={{ scale: noBtnScale }}
+                      onMouseEnter={handleNoClick}
+                      onClick={handleNoClick}
+                      className="w-full py-3 bg-white/40 backdrop-blur-xl text-rose-300 rounded-[2rem] font-bold text-sm border-2 border-dashed border-rose-100 shadow-lg flex items-center justify-center gap-1"
+                    >
+                      No... <span className="text-[10px] opacity-60">Wait!</span>
+                    </motion.button>
                   </motion.div>
                 </div>
-                <div className="w-full max-w-[240px] space-y-3">
-                  <button onClick={handleYesClick} className="w-full py-4 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-2xl font-bold text-lg shadow-lg">YES, I DO! 💍</button>
-                  <motion.button animate={{ x: noClicks > 0 ? noBtnPos.x : 0, y: noClicks > 0 ? noBtnPos.y : 0 }} onMouseEnter={handleNoClick} onClick={handleNoClick} className="w-full py-2.5 bg-white/40 text-rose-300 rounded-2xl font-bold text-xs border border-dashed border-rose-200">No...</motion.button>
-                </div>
-              </div>
+              </motion.div>
             ) : (
-              <div className="text-center w-full">
-                <div className="w-48 h-48 mx-auto mb-4 relative">
-                  <img src="https://i.postimg.cc/TwXHjS9x/vecteezy-adorable-orange-tabby-cat-sleeping-on-its-back-paws-up-69729063.png" className="w-full h-full object-contain filter drop-shadow-xl" alt="Yay" />
+              <motion.div 
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="text-center px-6 py-12"
+              >
+                {/* Confetti / Celebration Header */}
+                <div className="mb-8 flex justify-center gap-4">
+                  <motion.div animate={{ rotate: [0, 360] }} transition={{ duration: 10, repeat: Infinity, ease: "linear" }}>
+                    <div className="text-5xl">✨</div>
+                  </motion.div>
+                  <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Infinity }}>
+                    <div className="text-6xl">💖</div>
+                  </motion.div>
+                  <motion.div animate={{ rotate: [360, 0] }} transition={{ duration: 10, repeat: Infinity, ease: "linear" }}>
+                    <div className="text-5xl">✨</div>
+                  </motion.div>
                 </div>
-                <h2 className="text-2xl font-bold font-serif text-rose-600 mb-4">SHE SAID YES! 🐾💖</h2>
-                <div className="glass p-5 rounded-2xl border border-white shadow-lg mb-6">
-                  <p className="text-gray-700 text-[11px] leading-relaxed italic">"My darling, this is the start of our forever. I promise to love you more with every heartbeat."</p>
+
+                <div className="w-72 h-72 mx-auto mb-10 relative group">
+                  <div className="absolute inset-0 bg-rose-500 blur-3xl opacity-30 group-hover:opacity-50 transition-opacity" />
+                  
+                  {/* New Celebration Cat Image */}
+                  <img 
+                    src="https://i.postimg.cc/TwXHjS9x/vecteezy-adorable-orange-tabby-cat-sleeping-on-its-back-paws-up-69729063.png" 
+                    className="w-full h-full object-contain filter drop-shadow-2xl relative z-10"
+                    alt="Happy Celebration Cat"
+                  />
+
+                  {/* Celebration Speech Bubble */}
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.5, type: "spring" }}
+                    className="absolute top-0 left-1/2 -translate-x-1/2 bg-white px-6 py-3 rounded-full shadow-2xl border-2 border-rose-100 z-20 whitespace-nowrap"
+                  >
+                    <p className="text-rose-600 font-bold italic">
+                      {noClicks === 0 
+                        ? "Come in my arms, munuu ❤️" 
+                        : noClicks < 3 
+                          ? "Hey! Stop that! 😾" 
+                          : noClicks < 6 
+                            ? "No is NOT an option! 💢" 
+                            : "Don't you dare touch that No button! 😼"}
+                    </p>
+                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-r-2 border-b-2 border-rose-100 rotate-45" />
+                  </motion.div>
+
+                  <div className="absolute -bottom-6 -right-6 bg-white p-5 rounded-[2rem] shadow-2xl z-20 -rotate-12 border-2 border-rose-100 flex flex-col items-center">
+                    <span className="text-5xl">😻</span>
+                  </div>
                 </div>
-                <button onClick={() => setProposalStatus('idle')} className="px-6 py-2 bg-rose-50 text-rose-500 rounded-xl font-bold text-sm">Relive ✨</button>
-              </div>
+
+                <h2 className="text-5xl font-bold font-serif text-rose-600 mb-6 drop-shadow-sm leading-tight">YAYY! SHE SAID YES! 🐾💖</h2>
+                
+                <div className="glass p-8 rounded-[2.5rem] border-2 border-white shadow-xl mb-10 relative overflow-hidden">
+                  <div className="absolute -top-4 -left-4 w-12 h-12 bg-rose-100/50 rounded-full blur-xl" />
+                  <p className="text-gray-700 text-xl leading-relaxed font-medium relative z-10 italic">
+                    "My darling, this is the start of our forever. I promise to hold your hand, share your laughs, and love you more with every single heartbeat. Golu Molu Cat is now our official witness!"
+                  </p>
+                  <p className="mt-4 text-rose-600 font-bold font-serif text-2xl relative z-10">— Forever Yours, Jyotimoy ❤️</p>
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  onClick={() => setProposalStatus('idle')}
+                  className="px-10 py-4 bg-rose-50 text-rose-500 rounded-2xl font-bold text-lg hover:bg-rose-100 transition-colors"
+                >
+                  Relive the Moment ✨
+                </motion.button>
+              </motion.div>
             )}
           </div>
         )}
@@ -569,39 +913,62 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Floating Bottom Navigation */}
-      <nav className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 w-full px-8 max-w-xs shrink-0">
-        <div className="bg-white/80 backdrop-blur-2xl border border-white/40 shadow-xl rounded-[2rem] px-4 py-1.5 flex items-center justify-between">
+      {/* Floating Bottom Navigation - Minimal & frameless like header */}
+      <nav className="fixed bottom-4 left-0 right-0 z-50 px-8 flex justify-center pointer-events-none">
+        <div className="flex items-center gap-6 pointer-events-auto">
           <NavButton active={activeTab === 'discover'} icon={Home} label="Home" onClick={() => setActiveTab('discover')} />
           <NavButton active={activeTab === 'letter'} icon={MessageCircle} label="Letter" onClick={() => setActiveTab('letter')} />
           <NavButton active={activeTab === 'profile'} icon={Ring} label="Proposal" onClick={() => setActiveTab('profile')} />
         </div>
       </nav>
-
-      {/* Background Decos */}
-      <div className="fixed inset-0 -z-10 pointer-events-none opacity-20">
-         <div className="absolute top-[-5%] right-[-5%] w-[50%] aspect-square bg-rose-200/40 rounded-full blur-[80px]" />
-         <div className="absolute bottom-[-5%] left-[-5%] w-[50%] aspect-square bg-pink-200/40 rounded-full blur-[80px]" />
-      </div>
     </div>
   );
 }
 
 function NavButton({ active, icon: Icon, onClick, label }: { active: boolean, icon: any, onClick: () => void, label: string }) {
+  const [showLabel, setShowLabel] = useState(false);
+  const timeoutRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (active) {
+      setShowLabel(true);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => setShowLabel(false), 2000);
+    } else {
+      setShowLabel(false);
+    }
+  }, [active]);
+
+  const handleClick = () => {
+    onClick();
+    setShowLabel(true);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setShowLabel(false), 2000);
+  };
+
   return (
     <button 
-      onClick={onClick}
-      className={`relative flex flex-col items-center justify-center w-12 h-12 rounded-full transition-all duration-300 ${active ? 'bg-rose-500 shadow-lg shadow-rose-500/40 text-white' : 'text-rose-300 hover:text-rose-500 hover:bg-rose-50'}`}
+      onClick={handleClick}
+      className={`relative flex items-center justify-center w-14 h-14 rounded-full transition-all duration-500 ${
+        active 
+          ? 'bg-rose-500 shadow-[0_8px_24px_rgba(244,63,94,0.3)] text-white' 
+          : 'bg-white/30 backdrop-blur-md text-rose-400 border border-white/40 hover:bg-white/50'
+      }`}
     >
-      <Icon size={20} strokeWidth={active ? 2.5 : 2} />
-      {active && (
-        <motion.div 
-          layoutId="nav-label"
-          className="absolute -top-12 bg-white text-rose-600 shadow-lg border border-rose-100 text-[10px] font-bold px-3 py-1 rounded-lg pointer-events-none whitespace-nowrap"
-        >
-          {label}
-        </motion.div>
-      )}
+      <Icon size={24} strokeWidth={active ? 2.5 : 2} />
+      
+      <AnimatePresence>
+        {showLabel && (
+          <motion.div 
+            initial={{ opacity: 0, y: 10, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.8 }}
+            className="absolute -top-12 bg-white/40 backdrop-blur-md text-rose-600 shadow-[0_4px_12px_rgba(255,182,193,0.1)] border border-white/60 text-[10px] font-black tracking-widest uppercase px-4 py-2 rounded-full pointer-events-none whitespace-nowrap"
+          >
+            {label}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </button>
   );
 }
