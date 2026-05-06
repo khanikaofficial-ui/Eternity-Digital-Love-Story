@@ -5,7 +5,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, useScroll, useSpring, AnimatePresence } from 'motion/react';
-import { Heart, Coffee, Sparkles, Music, Star, Navigation2, X, User, MessageCircle, Home, Image as ImageIcon, Send, ArrowRight } from 'lucide-react';
+import { Heart, Coffee, Sparkles, Star, Navigation2, X, User, MessageCircle, Home, Image as ImageIcon, Send, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 // Custom Ring Icon for the Proposal tab
@@ -48,15 +48,6 @@ const TIMELINE_EVENTS = [
     secretNote: "Trinita, whenever I feel low or lose my way, I just look into your eyes. They are my sanctuary. You don't realize how much strength you give me just by being you. Your gaze is like a silent promise that everything will be okay. It's because of you that I've found the confidence to be the man I am today. You are my power, my anchor, and my greatest motivation. I love you, Munuu. ❤️"
   },
   {
-    title: "Me Annoying You 😜",
-    date: "December 23, 2025",
-    description: "They say if you don't annoy your partner, are you even in love? These moments are some of my favorites because even when you're mad at me, you're the most adorable person on Earth.",
-    icon: Heart,
-    image: "https://i.postimg.cc/vmy6SfZp/Screenshot-2025-12-23-12-28-22-43-8c9f6584ca98fa3eab4829abe86aac46.jpg",
-    extraImages: ["https://i.postimg.cc/QMDWn1d2/Screenshot-2025-12-23-12-29-09-19-8c9f6584ca98fa3eab4829abe86aac46.jpg"],
-    secretNote: "The only thing I love more than annoying you is loving you. I promise to keep bothering you with my love for the rest of our lives! ❤️😂"
-  },
-  {
     title: "Our Silent Promises 🌾✨",
     date: "April - May 2025",
     description: "The evenings that built our foundation. Walking hand in hand through the fields, sharing those little talks that meant everything.",
@@ -64,6 +55,15 @@ const TIMELINE_EVENTS = [
     image: "https://i.postimg.cc/3JK7Ch5V/IMG-20250402-WA0012.jpg",
     extraImages: ["https://i.postimg.cc/rF8cCT2L/IMG20250709183542.jpg"],
     secretNote: "Before we were even together, we were already building a world. Those evening walks in the field, holding your hand for the first time, those choti choti baate... they hit me so hard now. Every step we took was a silent promise to never let go. I didn't know it then, but I was already home. You made those simple walks the most magical moments of my life. I love you, Munuu. ❤️"
+  },
+  {
+    title: "Me Annoying You 😜",
+    date: "December 23, 2025",
+    description: "They say if you don't annoy your partner, are you even in love? These moments are some of my favorites because even when you're mad at me, you're the most adorable person on Earth.",
+    icon: Heart,
+    image: "https://i.postimg.cc/vmy6SfZp/Screenshot-2025-12-23-12-28-22-43-8c9f6584ca98fa3eab4829abe86aac46.jpg",
+    extraImages: ["https://i.postimg.cc/QMDWn1d2/Screenshot-2025-12-23-12-29-09-19-8c9f6584ca98fa3eab4829abe86aac46.jpg"],
+    secretNote: "The only thing I love more than annoying you is loving you. I promise to keep bothering you with my love for the rest of our lives! ❤️😂"
   },
   {
     date: "Feb 14, 2026",
