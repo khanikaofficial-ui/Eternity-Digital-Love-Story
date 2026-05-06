@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=Dancing+Script:wght@700&family=Caveat:wght@400..700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+  --font-cursive: "Dancing Script", cursive;
+  --font-handwriting: "Caveat", cursive;
+
+  --color-rose-50: #fff1f2;
+  --color-rose-100: #ffe4e6;
+  --color-rose-200: #fecdd3;
+  --color-rose-300: #fda4af;
+  --color-rose-400: #fb7185;
+  --color-rose-500: #f43f5e;
+}
+
+body {
+  background: #fdf2f2;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(254, 205, 211, 0.2) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(254, 205, 211, 0.2) 0%, transparent 20%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.8) 0%, transparent 100%);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Concentric Circles Background (Inspired by the image) */
+.bg-circles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: radial-gradient(circle, transparent 20%, #fdf2f2 20%) 0 0,
+              radial-gradient(circle, transparent 20%, #fdf2f2 20%) 50px 50px;
+  background-size: 100px 100px;
+  opacity: 0.1;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px 0 rgba(244, 63, 94, 0.08);
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #fb7185, #f43f5e, #e11d48);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.card-shadow {
+  box-shadow: 0 20px 40px -10px rgba(244, 63, 94, 0.15);
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.float { animation: float 3s ease-in-out infinite; }
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
