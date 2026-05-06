@@ -359,63 +359,130 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fdf2f2] font-sans text-gray-900 pb-24 selection:bg-rose-200">
+    <div className="min-h-screen bg-[#fdf2f2] font-sans text-gray-900 selection:bg-rose-200 overflow-hidden flex items-center justify-center md:py-8">
       <FloatingHearts />
-
-      {/* Floating Header */}
-      <header className="fixed top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-lg z-50">
-        <div className="bg-white/70 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(255,182,193,0.2)] rounded-3xl px-6 py-3 flex items-center justify-between">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-2"
-          >
-            <div className="w-8 h-8 bg-rose-500 rounded-full flex items-center justify-center shadow-lg shadow-rose-200">
-              <Heart size={16} className="text-white" fill="currentColor" />
-            </div>
-            <div>
-              <h1 className="font-serif text-lg font-bold text-gray-800 leading-tight">Jyotimoy & Trinita</h1>
-              <p className="text-[10px] text-rose-400 font-medium tracking-widest uppercase">365 Days of Us • Forever to Go</p>
-            </div>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-rose-50 px-3 py-1 rounded-full border border-rose-100"
-          >
-            <span className="text-rose-500 text-[10px] font-bold">1st Anniversary</span>
-          </motion.div>
-        </div>
-      </header>
-
-      {/* Main Content Area adjustments for floating header */}
-      <main className="pt-24 px-4 max-w-md mx-auto h-[calc(100vh-20px)] overflow-y-auto no-scrollbar pb-32">
+      
+      {/* 16:9 Desktop Container */}
+      <div className="relative w-full h-[100dvh] md:h-auto md:max-w-[1280px] md:aspect-video md:rounded-[2.5rem] md:shadow-[0_20px_50px_rgba(244,63,94,0.15)] bg-[#fdf2f2] overflow-hidden border border-white/40 flex flex-col">
         
-        {activeTab === 'discover' && (
-          <div className="relative h-[65vh] mt-4">
-            <AnimatePresence mode="popLayout">
-              {TIMELINE_EVENTS.map((event, i) => (
-                i === currentCard && (
-                  <motion.div
-                    key={i}
-                    initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                    animate={{ scale: 1, opacity: 1, y: 0, rotate: i % 2 === 0 ? -2 : 2 }}
-                    exit={{ x: 300, opacity: 0, rotate: 20 }}
-                    onClick={() => setIsFlipped(!isFlipped)}
-                    className="absolute inset-0 z-10 cursor-pointer"
-                  >
-                      <div className="h-full w-full rounded-[2.5rem] overflow-hidden card-shadow relative bg-white">
-                        {/* Favorite Star Badge */}
-                        {favorites.includes(currentCard) && (
-                          <motion.div 
-                            initial={{ scale: 0, rotate: -45 }}
-                            animate={{ scale: 1, rotate: 0 }}
-                            className="absolute top-6 right-6 z-50 bg-yellow-400 text-white p-2 rounded-full shadow-lg border-2 border-white"
-                          >
-                            <Star size={20} fill="currentColor" />
-                          </motion.div>
-                        )}
+        {/* Floating Header - Repositioned for Desktop */}
+        <header className="absolute top-6 left-6 right-6 z-50">
+          <div className="bg-white/70 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(255,182,193,0.2)] rounded-[2rem] px-8 py-4 flex items-center justify-between">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-3"
+            >
+              <div className="w-10 h-10 bg-rose-500 rounded-full flex items-center justify-center shadow-lg shadow-rose-200">
+                <Heart size={20} className="text-white" fill="currentColor" />
+              </div>
+              <div>
+                <h1 className="font-serif text-xl font-bold text-gray-800 leading-tight">Jyotimoy & Trinita</h1>
+                <p className="text-[11px] text-rose-400 font-medium tracking-[0.2em] uppercase">365 Days of Us • Forever to Go</p>
+              </div>
+            </motion.div>
+            
+            <div className="flex items-center gap-6">
+              {/* Desktop Statistics (Timer) in Header */}
+              <div className="hidden lg:flex items-center gap-4 bg-rose-50/50 px-4 py-2 rounded-2xl border border-rose-100">
+                 <div className="flex gap-2">
+                    <span className="text-rose-500 font-bold font-mono text-sm">{timeElapsed.years}y</span>
+                    <span className="text-rose-500 font-bold font-mono text-sm">{timeElapsed.months}m</span>
+                    <span className="text-rose-500 font-bold font-mono text-sm">{timeElapsed.days}d</span>
+                 </div>
+                 <div className="w-px h-4 bg-rose-200" />
+                 <div className="flex gap-2">
+                    <span className="text-rose-400 font-mono text-xs">{timeElapsed.hours}h</span>
+                    <span className="text-rose-400 font-mono text-xs">{timeElapsed.minutes}m</span>
+                    <span className="text-rose-400 font-mono text-xs">{timeElapsed.seconds}s</span>
+                 </div>
+              </div>
+
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-rose-50 px-4 py-1.5 rounded-full border border-rose-100 whitespace-nowrap"
+              >
+                <span className="text-rose-500 text-[11px] font-bold tracking-wider">1st Anniversary</span>
+              </motion.div>
+            </div>
+          </div>
+        </header>
+
+        {/* Main Content Area - Split Layout for Desktop */}
+        <main className="flex-1 w-full pt-28 px-8 pb-32 overflow-hidden relative">
+          
+          {activeTab === 'discover' && (
+            <div className="h-full flex flex-col lg:flex-row gap-12 items-center lg:items-stretch lg:justify-between px-4">
+              
+              {/* Left Side: Information & Counter (Desktop Only) */}
+              <div className="hidden lg:flex flex-col justify-center w-1/3 space-y-8 h-full">
+                <motion.div
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="space-y-4"
+                >
+                  <h2 className="text-5xl font-serif font-bold text-gray-800 leading-tight">
+                    Every <span className="text-rose-500">Moment</span> <br />
+                    Tells Our Story
+                  </h2>
+                  <p className="text-gray-500 text-lg leading-relaxed">
+                    A beautiful year of growth, laughter, and unbreakable bonds. 
+                    Swipe through our timeline to relive the magic.
+                  </p>
+                </motion.div>
+
+                <div className="bg-white/60 backdrop-blur-md p-8 rounded-[3rem] border border-white shadow-xl space-y-6">
+                  <p className="text-xs text-rose-400 font-bold uppercase tracking-[0.2em]">Milestone Tracker</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 bg-rose-50 rounded-2xl border border-rose-100">
+                      <p className="text-2xl font-bold text-rose-600 mb-1">{favorites.length}</p>
+                      <p className="text-[10px] text-rose-400 font-bold uppercase">Favorite Moments</p>
+                    </div>
+                    <div className="p-4 bg-rose-50 rounded-2xl border border-rose-100">
+                      <p className="text-2xl font-bold text-rose-600 mb-1">365</p>
+                      <p className="text-[10px] text-rose-400 font-bold uppercase">Days Together</p>
+                    </div>
+                  </div>
+                  
+                  <div className="pt-4 border-t border-rose-100">
+                    <div className="flex items-center gap-3">
+                      <div className="flex -space-x-3">
+                        {TIMELINE_EVENTS.slice(0, 3).map((ev, i) => (
+                          <img key={i} src={ev.image} className="w-8 h-8 rounded-full border-2 border-white object-cover" />
+                        ))}
+                      </div>
+                      <p className="text-[10px] text-gray-400 font-medium">Reliving {TIMELINE_EVENTS.length} memories</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Center/Right: Card Stack */}
+              <div className="relative w-full max-w-md lg:max-w-none lg:flex-1 h-full flex items-center justify-center">
+                <div className="relative w-full h-[55vh] lg:h-[70vh] lg:max-w-lg">
+                  <AnimatePresence mode="popLayout">
+                    {TIMELINE_EVENTS.map((event, i) => (
+                      i === currentCard && (
+                        <motion.div
+                          key={i}
+                          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                          animate={{ scale: 1, opacity: 1, y: 0, rotate: i % 2 === 0 ? -2 : 2 }}
+                          exit={{ x: 300, opacity: 0, rotate: 20 }}
+                          onClick={() => setIsFlipped(!isFlipped)}
+                          className="absolute inset-0 z-10 cursor-pointer"
+                        >
+                            <div className="h-full w-full rounded-[3rem] lg:rounded-[4rem] overflow-hidden card-shadow relative bg-white border-8 border-white">
+                              {/* Favorite Star Badge */}
+                              {favorites.includes(currentCard) && (
+                                <motion.div 
+                                  initial={{ scale: 0, rotate: -45 }}
+                                  animate={{ scale: 1, rotate: 0 }}
+                                  className="absolute top-8 right-8 z-50 bg-yellow-400 text-white p-3 rounded-full shadow-lg border-2 border-white"
+                                >
+                                  <Star size={24} fill="currentColor" />
+                                </motion.div>
+                              )}
 
                         {/* Secret Note Overlay */}
                         <AnimatePresence>
@@ -545,10 +612,10 @@ export default function App() {
             </AnimatePresence>
             
             {/* Action Buttons (Inspired by Discovery Screen in image) */}
-            <div className="absolute bottom-[-10px] left-0 right-0 flex justify-center items-center gap-6 z-20">
+            <div className="absolute bottom-[-20px] lg:bottom-4 left-0 right-0 flex justify-center items-center gap-8 z-20 scale-110 lg:scale-125">
               <button 
                 onClick={() => setCurrentCard((prev) => (prev - 1 + TIMELINE_EVENTS.length) % TIMELINE_EVENTS.length)}
-                className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-400 border border-gray-100 hover:bg-gray-50 transition-colors"
+                className="w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center text-gray-400 border border-gray-100 hover:bg-gray-50 transition-colors"
                 title="Previous Memory"
               >
                 <X size={24} />
@@ -561,26 +628,26 @@ export default function App() {
                       : [...prev, currentCard]
                   );
                 }}
-                className={`w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center border border-gray-100 transition-all ${favorites.includes(currentCard) ? 'text-yellow-500' : 'text-gray-300'}`}
+                className={`w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center border border-gray-100 transition-all ${favorites.includes(currentCard) ? 'text-yellow-500' : 'text-gray-300'}`}
                 title={favorites.includes(currentCard) ? "Remove from Favorites" : "Add to Favorites"}
               >
                 <Star size={24} fill={favorites.includes(currentCard) ? "currentColor" : "none"} />
               </button>
               <button 
                 onClick={() => setCurrentCard((prev) => (prev + 1) % TIMELINE_EVENTS.length)}
-                className="w-20 h-20 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 shadow-xl shadow-rose-300 flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform"
+                className="w-24 h-24 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 shadow-2xl shadow-rose-300 flex items-center justify-center text-white hover:scale-110 active:scale-95 transition-transform"
                 title="Next Memory"
               >
-                <Heart size={32} fill="currentColor" />
+                <Heart size={42} fill="currentColor" />
               </button>
             </div>
 
-            {/* Live Counter (Feature 2) */}
+            {/* Mobile-only Counter (Hidden on Large Desktop Layout) */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="absolute bottom-[-160px] left-0 right-0 text-center pb-8"
+              className="absolute bottom-[-160px] left-0 right-0 text-center pb-8 lg:hidden"
             >
                <div className="inline-block glass px-6 py-4 rounded-3xl border border-white/50 shadow-sm">
                   <p className="text-[10px] text-rose-400 font-bold uppercase tracking-[0.2em] mb-3">Our Time Together</p>
@@ -615,33 +682,41 @@ export default function App() {
                </div>
             </motion.div>
           </div>
-        )}
+        </div>
+      </div>
+    )}
 
-        {activeTab === 'letter' && (
+    {activeTab === 'letter' && (
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="py-12 px-2"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="h-full flex flex-col items-center justify-center py-6"
           >
-             <div className="text-center mb-8">
-                <h3 className="font-serif text-3xl font-bold text-rose-600 mb-2">Anniversary Letter for my Heart ❤️</h3>
-                <p className="text-rose-400 italic text-sm">(Click the arrows to flip the pages!)</p>
+             <div className="text-center mb-12">
+                <h3 className="font-serif text-4xl md:text-5xl font-bold text-rose-600 mb-3 tracking-tight">Anniversary Letter ❤️</h3>
+                <p className="text-rose-400 italic text-lg opacity-80">(Click the arrows to explore our heart...)</p>
              </div>
              
-             <SpiralNotebook />
+             <div className="w-full max-w-5xl">
+                <SpiralNotebook />
+             </div>
 
              <motion.div 
                initial={{ opacity: 0 }}
                animate={{ opacity: 1 }}
                transition={{ delay: 1 }}
-               className="mt-12 flex justify-center"
+               className="mt-12"
              >
-                <div className="bg-white/60 backdrop-blur-md p-6 rounded-[2rem] border-2 border-white shadow-xl flex items-center gap-4 max-w-xs mx-auto">
-                  <span className="text-rose-500 bg-rose-50 p-3 rounded-2xl shadow-inner">
-                    <Heart size={24} fill="currentColor" />
-                  </span>
-                  <p className="text-sm text-rose-800 font-serif italic font-semibold leading-tight">
-                    "Every single page holds a piece of my heart... just for you."
+                <div className="bg-white/80 backdrop-blur-md px-10 py-5 rounded-[2.5rem] border-2 border-white shadow-xl flex items-center gap-6 max-w-lg mx-auto">
+                  <motion.span 
+                    animate={{ scale: [1, 1.2, 1] }} 
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="text-rose-500 bg-rose-50 p-4 rounded-2xl shadow-inner shrink-0"
+                  >
+                    <Heart size={32} fill="currentColor" />
+                  </motion.span>
+                  <p className="text-lg text-rose-900 font-serif italic font-semibold leading-relaxed">
+                    "Every page is a heartbeat meant only for you, my Munuu."
                   </p>
                 </div>
              </motion.div>
@@ -649,7 +724,34 @@ export default function App() {
         )}
 
         {activeTab === 'profile' && (
-          <div className="py-8 flex flex-col items-center justify-center min-h-[70vh]">
+          <div className="h-full flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-24 px-8 overflow-y-auto no-scrollbar">
+            
+            <div className="hidden lg:block lg:w-1/3 text-left">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-6"
+              >
+                <div className="inline-block px-4 py-1.5 bg-rose-50 text-rose-500 font-bold text-xs uppercase tracking-widest rounded-full border border-rose-100">
+                  Life's Biggest Question
+                </div>
+                <h2 className="text-6xl font-serif font-bold text-gray-800 leading-[1.1]">
+                  Will you be <br />
+                  my <span className="text-rose-500 underline decoration-rose-200 underline-offset-8">Forever</span>?
+                </h2>
+                <p className="text-gray-500 text-xl leading-relaxed max-w-md">
+                  Beyond this anniversary, beyond today. 
+                  Every breath, every beat, I want it to be with you.
+                </p>
+                
+                <div className="flex items-center gap-4 pt-6">
+                  <div className="w-12 h-px bg-rose-200" />
+                  <Heart className="text-rose-400" size={24} />
+                  <div className="w-12 h-px bg-rose-200" />
+                </div>
+              </motion.div>
+            </div>
+
             {proposalStatus !== 'accepted' ? (
               <motion.div 
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -669,7 +771,7 @@ export default function App() {
                       rotate: noClicks > 0 ? [0, 5, -5, 0] : [0, 2, -2, 0]
                     }}
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    className="w-72 h-72 relative"
+                    className="w-72 h-72 lg:w-96 lg:h-96 relative"
                   >
                     {/* Shadow underneath */}
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-40 h-8 bg-black/5 blur-2xl rounded-full" />
@@ -700,10 +802,10 @@ export default function App() {
                     initial={{ scale: 0, opacity: 0, y: 20 }}
                     animate={{ scale: 1, opacity: 1, y: 0 }}
                     key={catDialogue}
-                    className="absolute -top-36 -right-4 bg-white p-6 rounded-[2rem] rounded-bl-none shadow-2xl border-2 border-rose-100 max-w-[220px] z-30"
+                    className="absolute -top-36 -right-4 bg-white p-6 rounded-[2.5rem] rounded-bl-none shadow-2xl border-2 border-rose-100 max-w-[220px] lg:max-w-[280px] z-30"
                   >
                     <div className="relative">
-                      <p className="text-sm font-bold text-gray-800 leading-relaxed italic">
+                      <p className="text-sm lg:text-base font-bold text-gray-800 leading-relaxed italic">
                         "{catDialogue}"
                       </p>
                       <div className="absolute -bottom-8 -left-8 w-6 h-6 bg-white border-l-2 border-b-2 border-rose-100 -rotate-45" />
@@ -722,13 +824,13 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="text-center mb-10 px-6">
+                <div className="text-center mb-10 px-6 lg:hidden">
                   <h2 className="text-4xl font-bold font-serif text-gray-800 mb-2 tracking-tight">The Big Question</h2>
                   <p className="text-rose-400 font-medium text-lg italic">Wait for it... he's really nervous! 🤭</p>
                 </div>
 
                 {/* Interactive Buttons */}
-                <div className="w-full space-y-5 px-6 relative pb-10 flex flex-col items-center">
+                <div className="w-full space-y-5 px-6 relative pb-10 flex flex-col items-center lg:items-start lg:px-0">
                   {/* Fixed Glowing YES Button - Always stays in center */}
                   <motion.button
                     animate={{ 
@@ -743,9 +845,9 @@ export default function App() {
                     whileHover={{ scale: 1.1, rotate: 1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={handleYesClick}
-                    className="w-full py-6 bg-gradient-to-r from-rose-500 via-pink-600 to-rose-500 bg-[length:200%_auto] text-white rounded-[2.5rem] font-bold text-3xl shadow-2xl border-4 border-white transform-gpu relative overflow-hidden z-50 animate-gradient"
+                    className="w-full py-6 bg-gradient-to-r from-rose-500 via-pink-600 to-rose-500 bg-[length:200%_auto] text-white rounded-[2.5rem] font-bold text-3xl lg:text-4xl shadow-2xl border-4 border-white transform-gpu relative overflow-hidden z-50 animate-gradient"
                   >
-                    <span className="relative z-10 drop-shadow-lg">YES, I DO! 💍</span>
+                    <span className="relative z-10 drop-shadow-lg uppercase tracking-wider">YES, I DO! 💍</span>
                     <motion.div 
                       className="absolute inset-0 bg-white/30"
                       animate={{ x: ['-100%', '100%'] }}
@@ -757,7 +859,7 @@ export default function App() {
                   <motion.div
                     animate={{ 
                       x: noClicks > 0 ? noBtnPos.x : 0, 
-                      y: noClicks > 0 ? noBtnPos.y : 0,
+                      y: noClicks > 0 ? (noClicks > 1 ? noBtnPos.y : 0) : 0, // In desktop avoid jumping too far up
                       rotate: noClicks > 0 ? noBtnPos.rotate : 0
                     }}
                     transition={{ type: "spring", stiffness: 350, damping: 25 }}
@@ -778,7 +880,7 @@ export default function App() {
               <motion.div 
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="text-center px-6 py-12"
+                className="text-center px-6 py-12 lg:w-2/3"
               >
                 {/* Confetti / Celebration Header */}
                 <div className="mb-8 flex justify-center gap-4">
@@ -793,7 +895,7 @@ export default function App() {
                   </motion.div>
                 </div>
 
-                <div className="w-72 h-72 mx-auto mb-10 relative group">
+                <div className="w-72 h-72 lg:w-96 lg:h-96 mx-auto mb-10 relative group">
                   <div className="absolute inset-0 bg-rose-500 blur-3xl opacity-30 group-hover:opacity-50 transition-opacity" />
                   
                   {/* New Celebration Cat Image */}
@@ -808,9 +910,9 @@ export default function App() {
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.5, type: "spring" }}
-                    className="absolute top-0 left-1/2 -translate-x-1/2 bg-white px-6 py-3 rounded-full shadow-2xl border-2 border-rose-100 z-20 whitespace-nowrap"
+                    className="absolute top-0 left-1/2 -translate-x-1/2 bg-white px-8 py-4 rounded-full shadow-2xl border-2 border-rose-100 z-20 whitespace-nowrap"
                   >
-                    <p className="text-rose-600 font-bold italic">
+                    <p className="text-rose-600 font-bold italic lg:text-xl">
                       {noClicks === 0 
                         ? "Come in my arms, munuu ❤️" 
                         : noClicks < 3 
@@ -822,25 +924,25 @@ export default function App() {
                     <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-r-2 border-b-2 border-rose-100 rotate-45" />
                   </motion.div>
 
-                  <div className="absolute -bottom-6 -right-6 bg-white p-5 rounded-[2rem] shadow-2xl z-20 -rotate-12 border-2 border-rose-100 flex flex-col items-center">
-                    <span className="text-5xl">😻</span>
+                  <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-[2.5rem] shadow-2xl z-20 -rotate-12 border-2 border-rose-100 flex flex-col items-center">
+                    <span className="text-6xl">😻</span>
                   </div>
                 </div>
 
-                <h2 className="text-5xl font-bold font-serif text-rose-600 mb-6 drop-shadow-sm leading-tight">YAYY! SHE SAID YES! 🐾💖</h2>
+                <h2 className="text-5xl lg:text-7xl font-bold font-serif text-rose-600 mb-6 drop-shadow-sm leading-tight">YAYY! SHE SAID YES! 🐾💖</h2>
                 
-                <div className="glass p-8 rounded-[2.5rem] border-2 border-white shadow-xl mb-10 relative overflow-hidden">
+                <div className="glass p-10 lg:p-12 rounded-[3.5rem] border-2 border-white shadow-xl mb-12 relative overflow-hidden max-w-2xl mx-auto">
                   <div className="absolute -top-4 -left-4 w-12 h-12 bg-rose-100/50 rounded-full blur-xl" />
-                  <p className="text-gray-700 text-xl leading-relaxed font-medium relative z-10 italic">
+                  <p className="text-gray-700 text-2xl lg:text-3xl leading-relaxed font-medium relative z-10 italic">
                     "My darling, this is the start of our forever. I promise to hold your hand, share your laughs, and love you more with every single heartbeat. Golu Molu Cat is now our official witness!"
                   </p>
-                  <p className="mt-4 text-rose-600 font-bold font-serif text-2xl relative z-10">— Forever Yours, Jyotimoy ❤️</p>
+                  <p className="mt-6 text-rose-600 font-bold font-serif text-3xl lg:text-4xl relative z-10">— Forever Yours, Jyotimoy ❤️</p>
                 </div>
 
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   onClick={() => setProposalStatus('idle')}
-                  className="px-10 py-4 bg-rose-50 text-rose-500 rounded-2xl font-bold text-lg hover:bg-rose-100 transition-colors"
+                  className="px-12 py-5 bg-rose-50 text-rose-500 rounded-3xl font-bold text-xl hover:bg-rose-100 transition-colors shadow-lg"
                 >
                   Relive the Moment ✨
                 </motion.button>
@@ -898,14 +1000,23 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Floating Bottom Navigation */}
-      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
-        <div className="bg-white/70 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(255,182,193,0.3)] rounded-full px-4 py-2 flex items-center gap-2">
-          <NavButton active={activeTab === 'discover'} icon={Home} label="Home" onClick={() => setActiveTab('discover')} />
-          <NavButton active={activeTab === 'letter'} icon={MessageCircle} label="Letter" onClick={() => setActiveTab('letter')} />
-          <NavButton active={activeTab === 'profile'} icon={Ring} label="Proposal" onClick={() => setActiveTab('profile')} />
-        </div>
-      </nav>
+        {/* Floating Bottom Navigation - Repositioned for App Feel */}
+        <nav className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50">
+          <div className="bg-white/70 backdrop-blur-2xl border border-white/40 shadow-[0_8px_48px_rgba(255,182,193,0.4)] rounded-[2.5rem] px-6 py-3 flex items-center gap-4">
+            <NavButton active={activeTab === 'discover'} icon={Home} label="Home" onClick={() => setActiveTab('discover')} />
+            <div className="w-px h-6 bg-rose-100" />
+            <NavButton active={activeTab === 'letter'} icon={MessageCircle} label="Letter" onClick={() => setActiveTab('letter')} />
+            <div className="w-px h-6 bg-rose-100" />
+            <NavButton active={activeTab === 'profile'} icon={Ring} label="Proposal" onClick={() => setActiveTab('profile')} />
+          </div>
+        </nav>
+      </div>
+
+      {/* Full-screen Background Deco for Desktop */}
+      <div className="fixed inset-0 -z-50 pointer-events-none opacity-30">
+         <div className="absolute top-[-10%] right-[-5%] w-[40%] aspect-square bg-rose-200/40 rounded-full blur-[120px]" />
+         <div className="absolute bottom-[-10%] left-[-5%] w-[40%] aspect-square bg-pink-200/40 rounded-full blur-[120px]" />
+      </div>
     </div>
   );
 }
