@@ -394,10 +394,38 @@ export default function App() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="pointer-events-auto"
+          className="pointer-events-auto shrink-0 relative"
         >
-          <div className="bg-white/30 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/40 shadow-[0_4px_24px_rgba(255,182,193,0.1)]">
-            <span className="text-rose-600 text-[8px] font-black tracking-widest uppercase">Anniversary</span>
+          <div className="glass px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-[1rem] border border-white/60 shadow-[0_4px_24px_rgba(255,182,193,0.2)] bg-white/40 backdrop-blur-xl flex flex-col items-center justify-center max-w-[150px] sm:max-w-none">
+            <p className="text-[6px] sm:text-[7px] text-rose-600/90 font-bold uppercase tracking-[0.1em] mb-1 leading-none">Our Time Together</p>
+            <motion.div 
+              animate={isCelebration ? { 
+                scale: [1, 1.05, 1],
+                boxShadow: ["0 0 0px rgba(255,20,147,0)", "0 0 10px rgba(255,20,147,0.3)", "0 0 0px rgba(255,20,147,0)"]
+              } : {}}
+              transition={{ duration: 2, repeat: Infinity }}
+              className={`flex items-center justify-center gap-1 sm:gap-1.5 relative ${isCelebration ? 'bg-rose-50/50 p-1 rounded-lg' : ''}`}
+            >
+               <TimeUnit value={timeElapsed.years} label="Yrs" />
+               <TimeUnit value={timeElapsed.months} label="Mts" />
+               <TimeUnit value={timeElapsed.days} label="Dys" />
+               <div className="w-[1px] h-3 bg-rose-300/60 mx-0.5" />
+               <TimeUnit value={timeElapsed.hours} label="Hrs" />
+               <TimeUnit value={timeElapsed.minutes} label="Min" />
+               <TimeUnit value={timeElapsed.seconds} label="Sec" />
+               
+               {isCelebration && (
+                 <motion.div 
+                   initial={{ opacity: 0, scale: 0.5, y: 10 }}
+                   animate={{ opacity: 1, scale: 1, y: 0 }}
+                   className="absolute -bottom-8 right-0"
+                 >
+                   <div className="bg-rose-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-full shadow-lg flex items-center justify-center gap-1 whitespace-nowrap">
+                     <Sparkles size={8} /> HAPPY ANNIVERSARY! <Sparkles size={8} />
+                   </div>
+                 </motion.div>
+               )}
+            </motion.div>
           </div>
         </motion.div>
       </header>
@@ -542,17 +570,14 @@ export default function App() {
                         {/* Interactive Glare Effect */}
                         <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-30 pointer-events-none" />
                         
-                        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 pb-[104px] sm:pb-[112px] text-white z-40 pointer-events-none">
+                        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 pb-8 sm:pb-10 text-white z-40 pointer-events-none">
                           <h2 className="text-2xl sm:text-3xl font-bold mb-2 font-serif drop-shadow-md">{event.title}</h2>
                           <div className="max-h-20 overflow-y-auto custom-scrollbar mb-3 pr-2 pointer-events-auto">
                             <p className="text-[13px] sm:text-sm text-gray-100 font-medium leading-relaxed drop-shadow-sm">{event.description}</p>
                           </div>
                           
-                          <div className="flex items-center gap-3">
-                            <span className="w-8 h-8 rounded-full bg-rose-500 shadow-md flex items-center justify-center">
-                              <event.icon size={14} className="text-white" />
-                            </span>
-                            <span className="text-xs text-white/90 font-semibold drop-shadow-sm">{event.date}</span>
+                          <div className="flex items-center mt-1">
+                            <span className="text-[13px] text-white/90 font-bold drop-shadow-md">{event.date}</span>
                           </div>
                         </div>
                     </div>
@@ -562,17 +587,15 @@ export default function App() {
                 </AnimatePresence>
               </div>
 
-            {/* Floating Action Buttons & Timer (Overlaid loosely on the bottom area) */}
-            <div className="absolute bottom-1 sm:bottom-2 left-1/2 -translate-x-1/2 w-full flex flex-col items-center gap-3 z-50 pointer-events-none">
-              
-              {/* Action Buttons */}
-              <div className="flex justify-center items-center gap-5 sm:gap-6 z-20 pointer-events-auto">
+            {/* Floating Action Buttons */}
+            <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 w-full flex flex-col items-center z-50 pointer-events-none">
+              <div className="flex justify-center items-center gap-6 sm:gap-8 z-20 pointer-events-auto">
                 <button 
                   onClick={() => setCurrentCard((prev) => (prev - 1 + TIMELINE_EVENTS.length) % TIMELINE_EVENTS.length)}
-                  className="w-10 h-10 rounded-full bg-white/95 backdrop-blur-md shadow-lg flex items-center justify-center text-gray-400 border border-rose-100/50 hover:bg-white hover:text-gray-600 transition-all active:scale-95"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 backdrop-blur-md shadow-lg flex items-center justify-center text-gray-400 border border-rose-100/50 hover:bg-white hover:text-gray-600 transition-all active:scale-95"
                   title="Previous Memory"
                 >
-                  <X size={18} />
+                  <X size={16} />
                 </button>
                 <button 
                   onClick={() => {
@@ -582,59 +605,19 @@ export default function App() {
                         : [...prev, currentCard]
                     );
                   }}
-                  className={`w-10 h-10 rounded-full bg-white/95 backdrop-blur-md shadow-lg flex items-center justify-center border border-rose-100/50 transition-all active:scale-95 hover:bg-white ${favorites.includes(currentCard) ? 'text-yellow-500' : 'text-gray-300'}`}
+                  className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/95 backdrop-blur-md shadow-lg flex items-center justify-center border border-rose-100/50 transition-all active:scale-95 hover:bg-white ${favorites.includes(currentCard) ? 'text-yellow-500' : 'text-gray-300'}`}
                   title={favorites.includes(currentCard) ? "Remove from Favorites" : "Add to Favorites"}
                 >
-                  <Star size={18} fill={favorites.includes(currentCard) ? "currentColor" : "none"} />
+                  <Star size={16} fill={favorites.includes(currentCard) ? "currentColor" : "none"} />
                 </button>
                 <button 
                   onClick={() => setCurrentCard((prev) => (prev + 1) % TIMELINE_EVENTS.length)}
-                  className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 shadow-xl shadow-rose-300/50 flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform"
+                  className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 shadow-xl shadow-rose-300/50 flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform"
                   title="Next Memory"
                 >
-                  <Heart size={22} fill="currentColor" />
+                  <Heart size={20} fill="currentColor" />
                 </button>
               </div>
-
-              {/* Live Counter (Feature 2) */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="text-center z-20 pointer-events-auto w-[90%] sm:w-auto"
-              >
-                 <div className="inline-block glass px-4 py-2.5 rounded-2xl border border-white/50 shadow-xl bg-white/60 backdrop-blur-xl hover:bg-white/70 transition-colors">
-                    <p className="text-[8px] sm:text-[9px] text-rose-600/90 font-bold uppercase tracking-[0.15em] mb-1.5">Our Time Together</p>
-                    <motion.div 
-                      animate={isCelebration ? { 
-                        scale: [1, 1.05, 1],
-                        boxShadow: ["0 0 0px rgba(255,20,147,0)", "0 0 15px rgba(255,20,147,0.3)", "0 0 0px rgba(255,20,147,0)"]
-                      } : {}}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className={`flex items-center justify-center gap-2.5 sm:gap-3 relative ${isCelebration ? 'bg-rose-50/50 p-1.5 rounded-xl' : ''}`}
-                    >
-                       <TimeUnit value={timeElapsed.years} label="Yrs" />
-                       <TimeUnit value={timeElapsed.months} label="Mts" />
-                       <TimeUnit value={timeElapsed.days} label="Dys" />
-                       <div className="w-px h-6 bg-rose-300/50" />
-                       <TimeUnit value={timeElapsed.hours} label="Hrs" />
-                       <TimeUnit value={timeElapsed.minutes} label="Min" />
-                       <TimeUnit value={timeElapsed.seconds} label="Sec" />
-                       
-                       {isCelebration && (
-                         <motion.div 
-                           initial={{ opacity: 0, scale: 0.5, y: 10 }}
-                           animate={{ opacity: 1, scale: 1, y: 0 }}
-                           className="absolute -top-10 inset-x-0"
-                         >
-                           <div className="bg-rose-500 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg flex items-center justify-center gap-2 mx-auto w-fit whitespace-nowrap">
-                             <Sparkles size={10} /> HAPPY 1st ANNIVERSARY! <Sparkles size={10} />
-                           </div>
-                         </motion.div>
-                       )}
-                    </motion.div>
-                 </div>
-              </motion.div>
             </div>
           </div>
         )}
@@ -985,16 +968,16 @@ function NavButton({ active, icon: Icon, onClick, label }: { active: boolean, ic
 
 function TimeUnit({ value, label }: { value: number, label: string }) {
   return (
-    <div className="flex flex-col items-center w-6">
+    <div className="flex flex-col items-center min-w-[14px] sm:min-w-[16px]">
       <motion.span 
         key={value}
         initial={{ scale: 1.2, color: '#f43f5e' }}
         animate={{ scale: 1, color: '#1f2937' }}
-        className="text-base sm:text-lg font-bold tabular-nums leading-none"
+        className="text-[10px] sm:text-[11px] font-bold tabular-nums leading-none"
       >
         {value}
       </motion.span>
-      <span className="text-[6px] sm:text-[7px] text-rose-500/80 uppercase font-bold tracking-wider mt-1">{label}</span>
+      <span className="text-[5px] sm:text-[6px] text-rose-500/90 uppercase font-extrabold tracking-widest mt-[2px]">{label}</span>
     </div>
   );
 }
