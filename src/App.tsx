@@ -114,7 +114,7 @@ function SpiralNotebook() {
   };
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto aspect-[3/4] md:aspect-[4/5] group select-none perspective-2000">
+    <div className="relative w-full h-full max-w-md mx-auto group select-none perspective-2000">
       {/* Real-style Spiral Spine (Static - High Detail) */}
       <div className="absolute left-4 top-8 bottom-8 w-8 z-50 pointer-events-none flex flex-col justify-between py-4">
         {Array.from({ length: 18 }).map((_, i) => (
@@ -172,7 +172,7 @@ function SpiralNotebook() {
           {/* Subtle Paper Texture */}
           <div className="absolute inset-0 bg-white/40 opacity-10 pointer-events-none" style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/natural-paper.png')" }} />
           
-          <div className="flex-1 flex flex-col justify-start pt-4 overflow-hidden">
+          <div className="flex-1 flex flex-col justify-start pt-4 pb-8 overflow-y-auto custom-scrollbar pr-2 min-h-0">
              <p className="font-handwriting text-base md:text-lg lg:text-xl text-gray-800 leading-[1.8em] whitespace-pre-wrap drop-shadow-sm tracking-tight text-justify">
                {LETTER_PAGES[page]}
              </p>
@@ -403,11 +403,12 @@ export default function App() {
       </header>
  
       {/* Main Content Area adjustments for floating header */}
-      <main className="flex-1 relative pt-16 px-4 max-w-md mx-auto w-full h-full overflow-hidden">
+      <main className="flex-1 relative z-10 pt-[72px] pb-[88px] px-4 max-w-md mx-auto w-full h-full flex flex-col">
         
         {activeTab === 'discover' && (
-          <div className="relative h-[58vh] mt-2">
-            <AnimatePresence mode="popLayout">
+          <div className="relative flex flex-col w-full h-full pb-2">
+            <div className="relative flex-1 w-full mx-auto min-h-0">
+              <AnimatePresence mode="popLayout">
               {TIMELINE_EVENTS.map((event, i) => (
                 i === currentCard && (
                   <motion.div
@@ -558,9 +559,10 @@ export default function App() {
                 )
               ))}
             </AnimatePresence>
+            </div>
             
             {/* Action Buttons (Inspired by Discovery Screen in image) */}
-            <div className="absolute bottom-[-10px] left-0 right-0 flex justify-center items-center gap-6 z-20">
+            <div className="shrink-0 flex justify-center items-center gap-6 z-20 mt-6 mb-4">
               <button 
                 onClick={() => setCurrentCard((prev) => (prev - 1 + TIMELINE_EVENTS.length) % TIMELINE_EVENTS.length)}
                 className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-400 border border-gray-100 hover:bg-gray-50 transition-colors"
@@ -595,7 +597,7 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="absolute bottom-[-160px] left-0 right-0 text-center pb-8"
+              className="shrink-0 text-center z-20"
             >
                <div className="inline-block glass px-6 py-4 rounded-3xl border border-white/50 shadow-sm">
                   <p className="text-[10px] text-rose-400 font-bold uppercase tracking-[0.2em] mb-3">Our Time Together</p>
@@ -636,26 +638,28 @@ export default function App() {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="py-12 px-2"
+            className="flex flex-col h-full py-4 pb-2 w-full"
           >
-             <div className="text-center mb-8">
-                <h3 className="font-serif text-3xl font-bold text-rose-600 mb-2">Anniversary Letter for my Heart ❤️</h3>
+             <div className="text-center mb-4 shrink-0">
+                <h3 className="font-serif text-2xl font-bold text-rose-600 mb-1 leading-tight">Anniversary Letter for my Heart ❤️</h3>
                 <p className="text-rose-400 italic text-sm">(Click the arrows to flip the pages!)</p>
              </div>
              
-             <SpiralNotebook />
+             <div className="flex-1 min-h-0 relative w-full">
+               <SpiralNotebook />
+             </div>
 
              <motion.div 
                initial={{ opacity: 0 }}
                animate={{ opacity: 1 }}
                transition={{ delay: 1 }}
-               className="mt-12 flex justify-center"
+               className="mt-6 flex justify-center shrink-0"
              >
-                <div className="bg-white/60 backdrop-blur-md p-6 rounded-[2rem] border-2 border-white shadow-xl flex items-center gap-4 max-w-xs mx-auto">
-                  <span className="text-rose-500 bg-rose-50 p-3 rounded-2xl shadow-inner">
-                    <Heart size={24} fill="currentColor" />
+                <div className="bg-white/60 backdrop-blur-md p-3 px-6 rounded-full border-2 border-white shadow-sm flex items-center gap-3 max-w-xs mx-auto">
+                  <span className="text-rose-500">
+                    <Heart size={18} fill="currentColor" />
                   </span>
-                  <p className="text-sm text-rose-800 font-serif italic font-semibold leading-tight">
+                  <p className="text-xs text-rose-800 font-serif italic font-semibold leading-tight">
                     "Every single page holds a piece of my heart... just for you."
                   </p>
                 </div>
@@ -664,30 +668,30 @@ export default function App() {
         )}
 
         {activeTab === 'profile' && (
-          <div className="py-2 flex flex-col items-center justify-center h-full max-h-full relative overflow-hidden">
+          <div className="py-2 flex flex-col items-center justify-center h-full max-h-full relative overflow-hidden w-full">
             {proposalStatus !== 'accepted' ? (
               <motion.div 
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="w-full max-w-md flex flex-col items-center relative"
+                className="w-full h-full flex flex-col justify-center items-center relative min-h-0"
               >
                 {/* Immersive Background for the 'Stage' */}
-                <div className="absolute inset-x-0 -top-20 -bottom-20 bg-gradient-to-b from-rose-50/50 to-transparent rounded-[3rem] -z-10" />
+                <div className="absolute inset-x-0 top-0 bottom-0 bg-gradient-to-b from-rose-50/50 to-transparent rounded-[3rem] -z-10" />
 
                 {/* The Cat - Talking Tom Style */}
-                <div className="relative mb-6 group cursor-pointer">
+                <div className="relative mb-6 group cursor-pointer mt-4">
                   <motion.div
                     animate={{ 
-                      y: [0, -6, 0],
+                      y: [0, -4, 0],
                       scaleX: [1, 1.02, 1],
                       scaleY: [1, 0.98, 1],
                       rotate: noClicks > 0 ? [0, 5, -5, 0] : [0, 2, -2, 0]
                     }}
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    className="w-52 h-52 relative"
+                    className="w-44 h-44 relative"
                   >
                     {/* Shadow underneath */}
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-32 h-6 bg-black/5 blur-2xl rounded-full" />
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-28 h-5 bg-black/5 blur-2xl rounded-full" />
                     
                     {/* High quality 3D-style Ginger Cat (User's cat.png) */}
                     <img 
@@ -704,7 +708,7 @@ export default function App() {
                         scale: [1, 1.1, 1]
                       }}
                       transition={{ duration: 2, repeat: Infinity }}
-                      className="absolute top-2 left-0 text-5xl drop-shadow-lg z-20"
+                      className="absolute top-2 left-0 text-4xl drop-shadow-lg z-20"
                     >
                       🌹
                     </motion.div>
@@ -715,13 +719,13 @@ export default function App() {
                     initial={{ scale: 0, opacity: 0, y: 20 }}
                     animate={{ scale: 1, opacity: 1, y: 0 }}
                     key={catDialogue}
-                    className="absolute -top-24 -right-1 bg-white p-4 rounded-[1.5rem] rounded-bl-none shadow-xl border-2 border-rose-50 max-w-[170px] z-30"
+                    className="absolute -top-20 -right-4 bg-white p-3 rounded-[1.5rem] rounded-bl-none shadow-xl border-2 border-rose-50 max-w-[150px] z-30"
                   >
                     <div className="relative">
-                      <p className="text-[11px] font-bold text-gray-800 leading-snug italic">
+                      <p className="text-[10px] font-bold text-gray-800 leading-snug italic">
                         "{catDialogue}"
                       </p>
-                      <div className="absolute -bottom-6 -left-6 w-4 h-4 bg-white border-l-2 border-b-2 border-rose-50 -rotate-45" />
+                      <div className="absolute -bottom-5 -left-5 w-4 h-4 bg-white border-l-2 border-b-2 border-rose-50 -rotate-45" />
                     </div>
                   </motion.div>
 
@@ -793,10 +797,10 @@ export default function App() {
               <motion.div 
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="text-center px-6 py-12"
+                className="text-center px-6 py-4 flex flex-col h-full justify-center w-full min-h-0"
               >
                 {/* Confetti / Celebration Header */}
-                <div className="mb-8 flex justify-center gap-4">
+                <div className="mb-4 flex justify-center gap-4 shrink-0">
                   <motion.div animate={{ rotate: [0, 360] }} transition={{ duration: 10, repeat: Infinity, ease: "linear" }}>
                     <div className="text-5xl">✨</div>
                   </motion.div>
@@ -808,7 +812,7 @@ export default function App() {
                   </motion.div>
                 </div>
 
-                <div className="w-72 h-72 mx-auto mb-10 relative group">
+                <div className="w-48 h-48 mx-auto mb-6 relative group shrink-0">
                   <div className="absolute inset-0 bg-rose-500 blur-3xl opacity-30 group-hover:opacity-50 transition-opacity" />
                   
                   {/* New Celebration Cat Image */}
@@ -842,20 +846,20 @@ export default function App() {
                   </div>
                 </div>
 
-                <h2 className="text-5xl font-bold font-serif text-rose-600 mb-6 drop-shadow-sm leading-tight">YAYY! SHE SAID YES! 🐾💖</h2>
+                <h2 className="text-4xl font-bold font-serif text-rose-600 mb-4 drop-shadow-sm leading-tight shrink-0">YAYY! SHE SAID YES! 🐾💖</h2>
                 
-                <div className="glass p-8 rounded-[2.5rem] border-2 border-white shadow-xl mb-10 relative overflow-hidden">
+                <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar glass p-6 rounded-[2.5rem] border-2 border-white shadow-xl mb-4 relative">
                   <div className="absolute -top-4 -left-4 w-12 h-12 bg-rose-100/50 rounded-full blur-xl" />
-                  <p className="text-gray-700 text-xl leading-relaxed font-medium relative z-10 italic">
+                  <p className="text-gray-700 text-lg leading-relaxed font-medium relative z-10 italic mt-2">
                     "My darling, this is the start of our forever. I promise to hold your hand, share your laughs, and love you more with every single heartbeat. Golu Molu Cat is now our official witness!"
                   </p>
-                  <p className="mt-4 text-rose-600 font-bold font-serif text-2xl relative z-10">— Forever Yours, Jyotimoy ❤️</p>
+                  <p className="mt-4 text-rose-600 font-bold font-serif text-xl relative z-10">— Forever Yours, Jyotimoy ❤️</p>
                 </div>
 
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   onClick={() => setProposalStatus('idle')}
-                  className="px-10 py-4 bg-rose-50 text-rose-500 rounded-2xl font-bold text-lg hover:bg-rose-100 transition-colors"
+                  className="px-8 py-3 bg-rose-50 text-rose-500 rounded-2xl font-bold text-base hover:bg-rose-100 transition-colors shrink-0 mx-auto"
                 >
                   Relive the Moment ✨
                 </motion.button>
