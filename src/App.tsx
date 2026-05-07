@@ -407,8 +407,8 @@ export default function App() {
         
         {activeTab === 'discover' && (
           <div className="relative flex flex-col w-full h-full pb-2">
-            <div className="relative flex-1 w-full flex justify-center items-center mx-auto min-h-0">
-              <div className="relative w-full h-full max-w-sm max-h-[65vh] md:max-h-[70vh] aspect-[4/5] sm:aspect-[3/4]">
+            <div className="relative flex-1 w-full flex justify-center items-center mx-auto min-h-0 mb-2 sm:mb-2">
+              <div className="relative h-full max-h-[58vh] sm:max-h-[65vh] aspect-[4/5] sm:aspect-[3/4] w-auto max-w-[88vw] sm:max-w-sm">
                 <AnimatePresence mode="popLayout">
                 {TIMELINE_EVENTS.map((event, i) => (
                   i === currentCard && (
@@ -439,15 +439,15 @@ export default function App() {
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0 }}
-                              className="absolute inset-0 z-50 bg-rose-500/95 backdrop-blur-md flex flex-col p-6 sm:p-10 text-center"
+                              className="absolute inset-0 z-50 bg-rose-500/95 backdrop-blur-md overflow-y-auto custom-scrollbar sm:no-scrollbar p-6 py-8 sm:p-10"
                             >
                                <motion.div
                                  initial={{ y: 20 }}
                                  animate={{ y: 0 }}
-                                 className="w-full h-full flex flex-col items-center justify-center overflow-y-auto custom-scrollbar sm:no-scrollbar py-4 px-2"
+                                 className="flex flex-col items-center justify-start min-h-full py-4"
                                >
-                                  <Heart size={36} className="text-white/80 fill-current mx-auto mb-4 shrink-0" />
-                                  <p className="font-cursive text-2xl sm:text-3xl text-white leading-relaxed my-auto">
+                                  <Heart size={36} className="text-white/80 fill-current mx-auto mb-6 shrink-0 mt-auto" />
+                                  <p className="font-cursive text-3xl sm:text-4xl text-white leading-relaxed text-center mb-auto">
                                     "{event.secretNote}"
                                   </p>
                                </motion.div>
@@ -565,13 +565,13 @@ export default function App() {
             </div>
             
             {/* Action Buttons (Inspired by Discovery Screen in image) */}
-            <div className="shrink-0 flex justify-center items-center gap-4 z-20 mt-4 mb-2">
+            <div className="shrink-0 flex justify-center items-center gap-4 z-20 mt-2 mb-2">
               <button 
                 onClick={() => setCurrentCard((prev) => (prev - 1 + TIMELINE_EVENTS.length) % TIMELINE_EVENTS.length)}
-                className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-400 border border-gray-100 hover:bg-gray-50 transition-colors"
+                className="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-400 border border-gray-100 hover:bg-gray-50 transition-colors"
                 title="Previous Memory"
               >
-                <X size={20} />
+                <X size={18} />
               </button>
               <button 
                 onClick={() => {
@@ -581,17 +581,17 @@ export default function App() {
                       : [...prev, currentCard]
                   );
                 }}
-                className={`w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center border border-gray-100 transition-all ${favorites.includes(currentCard) ? 'text-yellow-500' : 'text-gray-300'}`}
+                className={`w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center border border-gray-100 transition-all ${favorites.includes(currentCard) ? 'text-yellow-500' : 'text-gray-300'}`}
                 title={favorites.includes(currentCard) ? "Remove from Favorites" : "Add to Favorites"}
               >
-                <Star size={20} fill={favorites.includes(currentCard) ? "currentColor" : "none"} />
+                <Star size={18} fill={favorites.includes(currentCard) ? "currentColor" : "none"} />
               </button>
               <button 
                 onClick={() => setCurrentCard((prev) => (prev + 1) % TIMELINE_EVENTS.length)}
-                className="w-16 h-16 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 shadow-xl shadow-rose-300 flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform"
+                className="w-14 h-14 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 shadow-xl shadow-rose-300 flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform"
                 title="Next Memory"
               >
-                <Heart size={28} fill="currentColor" />
+                <Heart size={24} fill="currentColor" />
               </button>
             </div>
 
@@ -600,22 +600,22 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="shrink-0 text-center z-20"
+              className="shrink-0 text-center z-20 mt-1"
             >
-               <div className="inline-block glass px-6 py-4 rounded-3xl border border-white/50 shadow-sm">
-                  <p className="text-[10px] text-rose-400 font-bold uppercase tracking-[0.2em] mb-3">Our Time Together</p>
+               <div className="inline-block glass px-4 py-2.5 rounded-[1.5rem] border border-white/40 shadow-sm bg-white/40 backdrop-blur-md">
+                  <p className="text-[9px] text-rose-500/90 font-bold uppercase tracking-[0.15em] mb-1.5">Our Time Together</p>
                   <motion.div 
                     animate={isCelebration ? { 
                       scale: [1, 1.05, 1],
-                      boxShadow: ["0 0 0px rgba(255,20,147,0)", "0 0 20px rgba(255,20,147,0.5)", "0 0 0px rgba(255,20,147,0)"]
+                      boxShadow: ["0 0 0px rgba(255,20,147,0)", "0 0 15px rgba(255,20,147,0.4)", "0 0 0px rgba(255,20,147,0)"]
                     } : {}}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className={`flex items-center justify-center gap-4 relative ${isCelebration ? 'bg-rose-50/50 p-2 rounded-2xl' : ''}`}
+                    className={`flex items-center justify-center gap-3 relative ${isCelebration ? 'bg-rose-50/50 p-1.5 rounded-xl' : ''}`}
                   >
                      <TimeUnit value={timeElapsed.years} label="Yrs" />
                      <TimeUnit value={timeElapsed.months} label="Mts" />
                      <TimeUnit value={timeElapsed.days} label="Dys" />
-                     <div className="w-px h-8 bg-rose-100" />
+                     <div className="w-px h-6 bg-rose-200" />
                      <TimeUnit value={timeElapsed.hours} label="Hrs" />
                      <TimeUnit value={timeElapsed.minutes} label="Min" />
                      <TimeUnit value={timeElapsed.seconds} label="Sec" />
@@ -671,18 +671,32 @@ export default function App() {
         )}
 
         {activeTab === 'profile' && (
-          <div className="py-2 flex flex-col items-center justify-center h-full max-h-full relative overflow-hidden w-full">
+          <div className="py-2 flex flex-col items-center w-full h-full relative overflow-y-auto overflow-x-hidden custom-scrollbar">
             {proposalStatus !== 'accepted' ? (
               <motion.div 
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="w-full h-full flex flex-col justify-center items-center relative min-h-0"
+                className="w-full min-h-full flex flex-col justify-center items-center relative py-6"
               >
                 {/* Immersive Background for the 'Stage' */}
                 <div className="absolute inset-x-0 top-0 bottom-0 bg-gradient-to-b from-rose-50/50 to-transparent rounded-[3rem] -z-10" />
 
                 {/* The Cat - Talking Tom Style */}
-                <div className="relative mb-6 group cursor-pointer mt-4">
+                <div className="relative mb-6 group cursor-pointer mt-2 flex flex-col items-center">
+                  
+                  {/* Speech Bubble - Modern & Dynamic */}
+                  <motion.div 
+                    initial={{ scale: 0, opacity: 0, y: 10 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    key={catDialogue}
+                    className="bg-white p-3 py-2 rounded-2xl shadow-xl border-2 border-rose-100 max-w-[180px] z-30 text-center mb-3 relative"
+                  >
+                    <p className="text-xs font-bold text-gray-800 leading-[1.3] italic">
+                      "{catDialogue}"
+                    </p>
+                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-r-2 border-b-2 border-rose-100 rotate-45 z-[-1]" />
+                  </motion.div>
+
                   <motion.div
                     animate={{ 
                       y: [0, -4, 0],
@@ -691,7 +705,7 @@ export default function App() {
                       rotate: noClicks > 0 ? [0, 5, -5, 0] : [0, 2, -2, 0]
                     }}
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    className="w-44 h-44 relative"
+                    className="w-40 h-40 sm:w-44 sm:h-44 relative"
                   >
                     {/* Shadow underneath */}
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-28 h-5 bg-black/5 blur-2xl rounded-full" />
@@ -716,24 +730,9 @@ export default function App() {
                       🌹
                     </motion.div>
                   </motion.div>
-                  
-                  {/* Speech Bubble - Modern & Dynamic */}
-                  <motion.div 
-                    initial={{ scale: 0, opacity: 0, y: 10 }}
-                    animate={{ scale: 1, opacity: 1, y: 0 }}
-                    key={catDialogue}
-                    className="absolute -top-12 -right-6 bg-white p-3 py-2.5 rounded-2xl rounded-bl-sm shadow-xl border-2 border-rose-100 max-w-[140px] z-30 text-center"
-                  >
-                    <div className="relative">
-                      <p className="text-[11px] font-bold text-gray-800 leading-[1.2] italic">
-                        "{catDialogue}"
-                      </p>
-                      <div className="absolute -bottom-[14px] -left-2 w-4 h-4 bg-white border-l-2 border-b-2 border-rose-100 -rotate-[30deg] z-[-1]" />
-                    </div>
-                  </motion.div>
 
                   {/* Talking Tom 'Mic' Icon Indicator */}
-                  <div className="absolute -left-12 top-1/2 -translate-y-1/2">
+                  <div className="absolute -left-10 sm:-left-12 top-[60%] sm:top-1/2 -translate-y-1/2">
                     <motion.div
                       animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
@@ -800,39 +799,30 @@ export default function App() {
               <motion.div 
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="text-center px-6 py-4 flex flex-col h-full justify-center w-full min-h-0"
+                className="text-center px-4 py-8 flex flex-col justify-center items-center w-full min-h-full"
               >
                 {/* Confetti / Celebration Header */}
                 <div className="mb-4 flex justify-center gap-4 shrink-0">
                   <motion.div animate={{ rotate: [0, 360] }} transition={{ duration: 10, repeat: Infinity, ease: "linear" }}>
-                    <div className="text-5xl">✨</div>
+                    <div className="text-4xl sm:text-5xl">✨</div>
                   </motion.div>
                   <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Infinity }}>
-                    <div className="text-6xl">💖</div>
+                    <div className="text-5xl sm:text-6xl">💖</div>
                   </motion.div>
                   <motion.div animate={{ rotate: [360, 0] }} transition={{ duration: 10, repeat: Infinity, ease: "linear" }}>
-                    <div className="text-5xl">✨</div>
+                    <div className="text-4xl sm:text-5xl">✨</div>
                   </motion.div>
                 </div>
 
-                <div className="w-56 h-56 mx-auto mb-4 relative group shrink-0">
-                  <div className="absolute inset-0 bg-rose-500 blur-3xl opacity-30 group-hover:opacity-50 transition-opacity" />
-                  
-                  {/* New Celebration Cat Image */}
-                  <img 
-                    src="https://i.postimg.cc/TwXHjS9x/vecteezy-adorable-orange-tabby-cat-sleeping-on-its-back-paws-up-69729063.png" 
-                    className="w-full h-full object-contain filter drop-shadow-2xl relative z-10"
-                    alt="Happy Celebration Cat"
-                  />
-
+                <div className="flex flex-col items-center shrink-0 mb-4">
                   {/* Celebration Speech Bubble */}
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.5, type: "spring" }}
-                    className="absolute -top-4 left-1/2 -translate-x-1/2 bg-white px-5 py-2.5 rounded-full shadow-2xl border-2 border-rose-100 z-20 whitespace-nowrap"
+                    className="bg-white px-5 py-2.5 rounded-3xl shadow-xl border-2 border-rose-100 z-20 text-center relative mb-4"
                   >
-                    <p className="text-rose-600 font-bold italic text-xs">
+                    <p className="text-rose-600 font-bold italic text-sm">
                       {noClicks === 0 
                         ? "Come in my arms, munuu ❤️" 
                         : noClicks < 3 
@@ -841,22 +831,33 @@ export default function App() {
                             ? "No is NOT an option! 💢" 
                             : "Don't you dare touch that No button! 😼"}
                     </p>
-                    <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-r-2 border-b-2 border-rose-100 rotate-45" />
+                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-r-2 border-b-2 border-rose-100 rotate-45 z-[-1]" />
                   </motion.div>
 
-                  <div className="absolute -bottom-4 -right-4 bg-white p-4 rounded-3xl shadow-2xl z-20 -rotate-12 border-2 border-rose-100 flex flex-col items-center">
-                    <span className="text-4xl">😻</span>
+                  <div className="w-48 h-48 sm:w-56 sm:h-56 relative group">
+                    <div className="absolute inset-0 bg-rose-500 blur-3xl opacity-30 group-hover:opacity-50 transition-opacity" />
+                    
+                    {/* New Celebration Cat Image */}
+                    <img 
+                      src="https://i.postimg.cc/TwXHjS9x/vecteezy-adorable-orange-tabby-cat-sleeping-on-its-back-paws-up-69729063.png" 
+                      className="w-full h-full object-contain filter drop-shadow-2xl relative z-10"
+                      alt="Happy Celebration Cat"
+                    />
+
+                    <div className="absolute -bottom-2 -right-2 bg-white p-3 sm:p-4 rounded-full shadow-2xl z-20 -rotate-12 border-2 border-rose-100 flex flex-col items-center">
+                      <span className="text-3xl sm:text-4xl">😻</span>
+                    </div>
                   </div>
                 </div>
 
-                <h2 className="text-3xl font-bold font-serif text-rose-600 mb-3 drop-shadow-sm leading-tight shrink-0">YAYY! SHE SAID YES! 🐾💖</h2>
+                <h2 className="text-3xl font-bold font-serif text-rose-600 mb-4 drop-shadow-sm leading-tight shrink-0">YAYY! SHE SAID YES! 🐾💖</h2>
                 
-                <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar glass p-6 pt-5 rounded-[2rem] border-2 border-white shadow-xl mb-4 relative">
+                <div className="shrink-0 glass p-6 pt-5 rounded-[2rem] border-2 border-white shadow-xl mb-6 relative w-full">
                   <div className="absolute -top-4 -left-4 w-12 h-12 bg-rose-100/50 rounded-full blur-xl" />
                   <p className="text-gray-700 text-base leading-relaxed font-medium relative z-10 italic">
                     "My darling, this is the start of our forever. I promise to hold your hand, share your laughs, and love you more with every single heartbeat. Golu Molu Cat is now our official witness!"
                   </p>
-                  <p className="mt-3 text-rose-600 font-bold font-serif text-lg relative z-10">— Forever Yours, Jyotimoy ❤️</p>
+                  <p className="mt-4 text-rose-600 font-bold font-serif text-lg relative z-10">— Forever Yours, Jyotimoy ❤️</p>
                 </div>
 
                 <motion.button
@@ -987,11 +988,11 @@ function TimeUnit({ value, label }: { value: number, label: string }) {
         key={value}
         initial={{ scale: 1.2, color: '#f43f5e' }}
         animate={{ scale: 1, color: '#1f2937' }}
-        className="text-xl font-bold tabular-nums"
+        className="text-lg font-bold tabular-nums"
       >
         {value}
       </motion.span>
-      <span className="text-[8px] text-rose-400 uppercase font-bold tracking-wider">{label}</span>
+      <span className="text-[7px] text-rose-400 uppercase font-bold tracking-wider">{label}</span>
     </div>
   );
 }
