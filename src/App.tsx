@@ -406,10 +406,9 @@ export default function App() {
       <main className="flex-1 relative z-10 pt-[72px] pb-[88px] px-4 max-w-md mx-auto w-full h-full flex flex-col">
         
         {activeTab === 'discover' && (
-          <div className="relative flex flex-col w-full h-full pb-2">
-            <div className="relative flex-1 w-full flex justify-center items-center mx-auto min-h-0 mb-2 sm:mb-2">
-              <div className="relative h-full max-h-[58vh] sm:max-h-[65vh] aspect-[4/5] sm:aspect-[3/4] w-auto max-w-[88vw] sm:max-w-sm">
-                <AnimatePresence mode="popLayout">
+          <div className="relative flex w-full h-full items-center justify-center">
+            <div className="relative h-full max-h-[75vh] sm:max-h-[80vh] aspect-[3/4] w-auto max-w-[94vw] sm:max-w-[400px] mx-auto shrink-0">
+              <AnimatePresence mode="popLayout">
                 {TIMELINE_EVENTS.map((event, i) => (
                   i === currentCard && (
                     <motion.div
@@ -543,17 +542,17 @@ export default function App() {
                         {/* Interactive Glare Effect */}
                         <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-30 pointer-events-none" />
                         
-                        <div className="absolute bottom-0 left-0 right-0 p-8 text-white z-40">
-                          <h2 className="text-3xl font-bold mb-2 font-serif">{event.title}</h2>
-                          <div className="max-h-24 overflow-y-auto custom-scrollbar mb-4 pr-2">
-                            <p className="text-sm text-gray-200 leading-relaxed">{event.description}</p>
+                        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 pb-[104px] sm:pb-[112px] text-white z-40 pointer-events-none">
+                          <h2 className="text-2xl sm:text-3xl font-bold mb-2 font-serif drop-shadow-md">{event.title}</h2>
+                          <div className="max-h-20 overflow-y-auto custom-scrollbar mb-3 pr-2 pointer-events-auto">
+                            <p className="text-[13px] sm:text-sm text-gray-100 font-medium leading-relaxed drop-shadow-sm">{event.description}</p>
                           </div>
                           
                           <div className="flex items-center gap-3">
-                            <span className="w-8 h-8 rounded-full bg-rose-500 flex items-center justify-center">
+                            <span className="w-8 h-8 rounded-full bg-rose-500 shadow-md flex items-center justify-center">
                               <event.icon size={14} className="text-white" />
                             </span>
-                            <span className="text-xs opacity-70 font-medium">{event.date}</span>
+                            <span className="text-xs text-white/90 font-semibold drop-shadow-sm">{event.date}</span>
                           </div>
                         </div>
                     </div>
@@ -562,78 +561,81 @@ export default function App() {
                 ))}
                 </AnimatePresence>
               </div>
-            </div>
-            
-            {/* Action Buttons (Inspired by Discovery Screen in image) */}
-            <div className="shrink-0 flex justify-center items-center gap-4 z-20 mt-2 mb-2">
-              <button 
-                onClick={() => setCurrentCard((prev) => (prev - 1 + TIMELINE_EVENTS.length) % TIMELINE_EVENTS.length)}
-                className="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-400 border border-gray-100 hover:bg-gray-50 transition-colors"
-                title="Previous Memory"
-              >
-                <X size={18} />
-              </button>
-              <button 
-                onClick={() => {
-                  setFavorites(prev => 
-                    prev.includes(currentCard) 
-                      ? prev.filter(id => id !== currentCard)
-                      : [...prev, currentCard]
-                  );
-                }}
-                className={`w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center border border-gray-100 transition-all ${favorites.includes(currentCard) ? 'text-yellow-500' : 'text-gray-300'}`}
-                title={favorites.includes(currentCard) ? "Remove from Favorites" : "Add to Favorites"}
-              >
-                <Star size={18} fill={favorites.includes(currentCard) ? "currentColor" : "none"} />
-              </button>
-              <button 
-                onClick={() => setCurrentCard((prev) => (prev + 1) % TIMELINE_EVENTS.length)}
-                className="w-14 h-14 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 shadow-xl shadow-rose-300 flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform"
-                title="Next Memory"
-              >
-                <Heart size={24} fill="currentColor" />
-              </button>
-            </div>
 
-            {/* Live Counter (Feature 2) */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="shrink-0 text-center z-20 mt-1"
-            >
-               <div className="inline-block glass px-4 py-2.5 rounded-[1.5rem] border border-white/40 shadow-sm bg-white/40 backdrop-blur-md">
-                  <p className="text-[9px] text-rose-500/90 font-bold uppercase tracking-[0.15em] mb-1.5">Our Time Together</p>
-                  <motion.div 
-                    animate={isCelebration ? { 
-                      scale: [1, 1.05, 1],
-                      boxShadow: ["0 0 0px rgba(255,20,147,0)", "0 0 15px rgba(255,20,147,0.4)", "0 0 0px rgba(255,20,147,0)"]
-                    } : {}}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className={`flex items-center justify-center gap-3 relative ${isCelebration ? 'bg-rose-50/50 p-1.5 rounded-xl' : ''}`}
-                  >
-                     <TimeUnit value={timeElapsed.years} label="Yrs" />
-                     <TimeUnit value={timeElapsed.months} label="Mts" />
-                     <TimeUnit value={timeElapsed.days} label="Dys" />
-                     <div className="w-px h-6 bg-rose-200" />
-                     <TimeUnit value={timeElapsed.hours} label="Hrs" />
-                     <TimeUnit value={timeElapsed.minutes} label="Min" />
-                     <TimeUnit value={timeElapsed.seconds} label="Sec" />
-                     
-                     {isCelebration && (
-                       <motion.div 
-                         initial={{ opacity: 0, scale: 0.5, y: 10 }}
-                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                         className="absolute -top-10 inset-x-0"
-                       >
-                         <div className="bg-rose-500 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg flex items-center justify-center gap-2 mx-auto w-fit whitespace-nowrap">
-                           <Sparkles size={10} /> HAPPY 1st ANNIVERSARY! <Sparkles size={10} />
-                         </div>
-                       </motion.div>
-                     )}
-                  </motion.div>
-               </div>
-            </motion.div>
+            {/* Floating Action Buttons & Timer (Overlaid loosely on the bottom area) */}
+            <div className="absolute bottom-1 sm:bottom-2 left-1/2 -translate-x-1/2 w-full flex flex-col items-center gap-3 z-50 pointer-events-none">
+              
+              {/* Action Buttons */}
+              <div className="flex justify-center items-center gap-5 sm:gap-6 z-20 pointer-events-auto">
+                <button 
+                  onClick={() => setCurrentCard((prev) => (prev - 1 + TIMELINE_EVENTS.length) % TIMELINE_EVENTS.length)}
+                  className="w-10 h-10 rounded-full bg-white/95 backdrop-blur-md shadow-lg flex items-center justify-center text-gray-400 border border-rose-100/50 hover:bg-white hover:text-gray-600 transition-all active:scale-95"
+                  title="Previous Memory"
+                >
+                  <X size={18} />
+                </button>
+                <button 
+                  onClick={() => {
+                    setFavorites(prev => 
+                      prev.includes(currentCard) 
+                        ? prev.filter(id => id !== currentCard)
+                        : [...prev, currentCard]
+                    );
+                  }}
+                  className={`w-10 h-10 rounded-full bg-white/95 backdrop-blur-md shadow-lg flex items-center justify-center border border-rose-100/50 transition-all active:scale-95 hover:bg-white ${favorites.includes(currentCard) ? 'text-yellow-500' : 'text-gray-300'}`}
+                  title={favorites.includes(currentCard) ? "Remove from Favorites" : "Add to Favorites"}
+                >
+                  <Star size={18} fill={favorites.includes(currentCard) ? "currentColor" : "none"} />
+                </button>
+                <button 
+                  onClick={() => setCurrentCard((prev) => (prev + 1) % TIMELINE_EVENTS.length)}
+                  className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 shadow-xl shadow-rose-300/50 flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform"
+                  title="Next Memory"
+                >
+                  <Heart size={22} fill="currentColor" />
+                </button>
+              </div>
+
+              {/* Live Counter (Feature 2) */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="text-center z-20 pointer-events-auto w-[90%] sm:w-auto"
+              >
+                 <div className="inline-block glass px-4 py-2.5 rounded-2xl border border-white/50 shadow-xl bg-white/60 backdrop-blur-xl hover:bg-white/70 transition-colors">
+                    <p className="text-[8px] sm:text-[9px] text-rose-600/90 font-bold uppercase tracking-[0.15em] mb-1.5">Our Time Together</p>
+                    <motion.div 
+                      animate={isCelebration ? { 
+                        scale: [1, 1.05, 1],
+                        boxShadow: ["0 0 0px rgba(255,20,147,0)", "0 0 15px rgba(255,20,147,0.3)", "0 0 0px rgba(255,20,147,0)"]
+                      } : {}}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className={`flex items-center justify-center gap-2.5 sm:gap-3 relative ${isCelebration ? 'bg-rose-50/50 p-1.5 rounded-xl' : ''}`}
+                    >
+                       <TimeUnit value={timeElapsed.years} label="Yrs" />
+                       <TimeUnit value={timeElapsed.months} label="Mts" />
+                       <TimeUnit value={timeElapsed.days} label="Dys" />
+                       <div className="w-px h-6 bg-rose-300/50" />
+                       <TimeUnit value={timeElapsed.hours} label="Hrs" />
+                       <TimeUnit value={timeElapsed.minutes} label="Min" />
+                       <TimeUnit value={timeElapsed.seconds} label="Sec" />
+                       
+                       {isCelebration && (
+                         <motion.div 
+                           initial={{ opacity: 0, scale: 0.5, y: 10 }}
+                           animate={{ opacity: 1, scale: 1, y: 0 }}
+                           className="absolute -top-10 inset-x-0"
+                         >
+                           <div className="bg-rose-500 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg flex items-center justify-center gap-2 mx-auto w-fit whitespace-nowrap">
+                             <Sparkles size={10} /> HAPPY 1st ANNIVERSARY! <Sparkles size={10} />
+                           </div>
+                         </motion.div>
+                       )}
+                    </motion.div>
+                 </div>
+              </motion.div>
+            </div>
           </div>
         )}
 
@@ -983,16 +985,16 @@ function NavButton({ active, icon: Icon, onClick, label }: { active: boolean, ic
 
 function TimeUnit({ value, label }: { value: number, label: string }) {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-6">
       <motion.span 
         key={value}
         initial={{ scale: 1.2, color: '#f43f5e' }}
         animate={{ scale: 1, color: '#1f2937' }}
-        className="text-lg font-bold tabular-nums"
+        className="text-base sm:text-lg font-bold tabular-nums leading-none"
       >
         {value}
       </motion.span>
-      <span className="text-[7px] text-rose-400 uppercase font-bold tracking-wider">{label}</span>
+      <span className="text-[6px] sm:text-[7px] text-rose-500/80 uppercase font-bold tracking-wider mt-1">{label}</span>
     </div>
   );
 }
