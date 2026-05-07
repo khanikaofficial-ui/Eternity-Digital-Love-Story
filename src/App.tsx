@@ -784,7 +784,7 @@ export default function App() {
               <motion.div 
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="text-center px-4 py-8 flex flex-col justify-center items-center w-full min-h-full"
+                className="text-center px-4 pb-24 pt-8 flex flex-col items-center w-full my-auto"
               >
                 {/* Confetti / Celebration Header */}
                 <div className="mb-4 flex justify-center gap-4 shrink-0">
@@ -799,15 +799,9 @@ export default function App() {
                   </motion.div>
                 </div>
 
-                <div className="flex flex-col items-center shrink-0 mb-4">
+                <div className="flex flex-col items-center shrink-0 mb-2 relative z-50 mt-4">
                   {/* Celebration Speech Bubble - Fixed Visibility */}
-                  <motion.div
-                    key="celebration-speech"
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.2, type: "spring" }}
-                    className="bg-white px-5 py-2.5 rounded-3xl shadow-xl border-2 border-rose-100 z-30 text-center relative mb-4"
-                  >
+                  <div className="bg-white px-6 py-3 rounded-3xl shadow-xl border-2 border-rose-200 z-[60] text-center relative mb-4 transform transition-all duration-500 scale-100 hover:scale-105">
                     <p className="text-rose-600 font-bold italic text-sm">
                       {noClicks === 0 
                         ? "Come in my arms, munuu ❤️" 
@@ -815,10 +809,10 @@ export default function App() {
                           ? "Finally! Now come in my arms, munuu ❤️" 
                           : "Akhir YES hi bolna tha! Come in my arms, munuu ❤️"}
                     </p>
-                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-r-2 border-b-2 border-rose-100 rotate-45 z-[-1]" />
-                  </motion.div>
+                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-l-2 border-b-2 border-rose-200 -rotate-45 z-[-1]" />
+                  </div>
 
-                  <div className="w-48 h-48 sm:w-56 sm:h-56 relative group mt-1">
+                  <div className="w-48 h-48 sm:w-56 sm:h-56 relative group translate-y-6 z-40">
                     <div className="absolute inset-0 bg-rose-500 blur-3xl opacity-30 group-hover:opacity-50 transition-opacity" />
                     
                     {/* New Celebration Cat Image */}
