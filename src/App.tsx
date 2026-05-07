@@ -588,7 +588,7 @@ export default function App() {
               </div>
 
             {/* Floating Action Buttons */}
-            <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 w-full flex flex-col items-center z-50 pointer-events-none">
+            <div className="absolute -bottom-4 sm:-bottom-2 left-1/2 -translate-x-1/2 w-full flex flex-col items-center z-50 pointer-events-none">
               <div className="flex justify-center items-center gap-6 sm:gap-8 z-20 pointer-events-auto">
                 <button 
                   onClick={() => setCurrentCard((prev) => (prev - 1 + TIMELINE_EVENTS.length) % TIMELINE_EVENTS.length)}
@@ -800,26 +800,25 @@ export default function App() {
                 </div>
 
                 <div className="flex flex-col items-center shrink-0 mb-4">
-                  {/* Celebration Speech Bubble */}
+                  {/* Celebration Speech Bubble - Fixed Visibility */}
                   <motion.div
+                    key="celebration-speech"
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.5, type: "spring" }}
-                    className="bg-white px-5 py-2.5 rounded-3xl shadow-xl border-2 border-rose-100 z-20 text-center relative mb-4"
+                    transition={{ delay: 0.2, type: "spring" }}
+                    className="bg-white px-5 py-2.5 rounded-3xl shadow-xl border-2 border-rose-100 z-30 text-center relative mb-4"
                   >
                     <p className="text-rose-600 font-bold italic text-sm">
                       {noClicks === 0 
                         ? "Come in my arms, munuu ❤️" 
                         : noClicks < 3 
-                          ? "Hey! Stop that! 😾" 
-                          : noClicks < 6 
-                            ? "No is NOT an option! 💢" 
-                            : "Don't you dare touch that No button! 😼"}
+                          ? "Finally! Now come in my arms, munuu ❤️" 
+                          : "Akhir YES hi bolna tha! Come in my arms, munuu ❤️"}
                     </p>
                     <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-r-2 border-b-2 border-rose-100 rotate-45 z-[-1]" />
                   </motion.div>
 
-                  <div className="w-48 h-48 sm:w-56 sm:h-56 relative group">
+                  <div className="w-48 h-48 sm:w-56 sm:h-56 relative group mt-1">
                     <div className="absolute inset-0 bg-rose-500 blur-3xl opacity-30 group-hover:opacity-50 transition-opacity" />
                     
                     {/* New Celebration Cat Image */}
@@ -828,10 +827,6 @@ export default function App() {
                       className="w-full h-full object-contain filter drop-shadow-2xl relative z-10"
                       alt="Happy Celebration Cat"
                     />
-
-                    <div className="absolute -bottom-2 -right-2 bg-white p-3 sm:p-4 rounded-full shadow-2xl z-20 -rotate-12 border-2 border-rose-100 flex flex-col items-center">
-                      <span className="text-3xl sm:text-4xl">😻</span>
-                    </div>
                   </div>
                 </div>
 
@@ -907,8 +902,8 @@ export default function App() {
       </AnimatePresence>
 
       {/* Floating Bottom Navigation - Minimal & frameless like header */}
-      <nav className="fixed bottom-4 left-0 right-0 z-50 px-8 flex justify-center pointer-events-none">
-        <div className="flex items-center gap-6 pointer-events-auto">
+      <nav className="fixed bottom-2 left-0 right-0 z-50 px-8 flex justify-center pointer-events-none">
+        <div className="flex items-center gap-5 sm:gap-6 pointer-events-auto">
           <NavButton active={activeTab === 'discover'} icon={Home} label="Home" onClick={() => setActiveTab('discover')} />
           <NavButton active={activeTab === 'letter'} icon={MessageCircle} label="Letter" onClick={() => setActiveTab('letter')} />
           <NavButton active={activeTab === 'profile'} icon={Ring} label="Proposal" onClick={() => setActiveTab('profile')} />
@@ -942,13 +937,13 @@ function NavButton({ active, icon: Icon, onClick, label }: { active: boolean, ic
   return (
     <button 
       onClick={handleClick}
-      className={`relative flex items-center justify-center w-14 h-14 rounded-full transition-all duration-500 ${
+      className={`relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full transition-all duration-500 ${
         active 
           ? 'bg-rose-500 shadow-[0_8px_24px_rgba(244,63,94,0.3)] text-white' 
           : 'bg-white/30 backdrop-blur-md text-rose-400 border border-white/40 hover:bg-white/50'
       }`}
     >
-      <Icon size={24} strokeWidth={active ? 2.5 : 2} />
+      <Icon size={20} strokeWidth={active ? 2.5 : 2} />
       
       <AnimatePresence>
         {showLabel && (
