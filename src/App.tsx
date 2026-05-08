@@ -5,8 +5,9 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, useScroll, useSpring, AnimatePresence } from 'motion/react';
-import { Heart, Coffee, Sparkles, Music, Star, Navigation2, X, User, MessageCircle, Home, Image as ImageIcon, Send, ArrowRight } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { Heart, Coffee, Sparkles, Music, Star, Navigation2, X, User, MessageCircle, Home, Image as ImageIcon, Send, ArrowRight, Volume2, VolumeX } from 'lucide-react';
+import confettiModule from 'canvas-confetti';
+const confetti = confettiModule.create(null, { useWorker: false, resize: true });
 
 // Custom Ring Icon for the Proposal tab
 const Ring = ({ size = 20, ...props }: any) => (
@@ -197,6 +198,132 @@ export default function App() {
   const [noBtnPos, setNoBtnPos] = useState({ x: 0, y: 0, rotate: 0 });
   const [hasMovedNo, setHasMovedNo] = useState(false);
   const [showMatch, setShowMatch] = useState(false);
+  
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const fadeIntervalRef = useRef<any>(null);
+
+  const getAudioForTab = (tab: string) => {
+    if (tab === 'discover') return '/memories.mp3';
+    if (tab === 'letter') return '/leberch-calm.mp3';
+    return '';
+  };
+
+  const [currentAudioSrc, setCurrentAudioSrc] = useState(() => getAudioForTab('discover'));
+
+  const playSoftFirecracker = () => {
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+
+    const burst = (time: number, duration: number, volume: number) => {
+      const bufferSize = ctx.sampleRate * duration;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1; // white noise
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      // Filter to make it sound like a soft pop/thud rather than harsh static
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1400 + Math.random() * 600, time);
+      filter.Q.value = 1;
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0, time);
+      gain.gain.linearRampToValueAtTime(volume, time + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.01, time + duration);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      noise.start(time);
+    };
+
+    // Multiple gentle bursts for confetti pop
+    for (let i = 0; i < 12; i++) {
+      burst(ctx.currentTime + Math.random() * 0.6, 0.2, 0.04 + Math.random() * 0.04);
+    }
+  };
+
+  useEffect(() => {
+    const newSrc = getAudioForTab(activeTab);
+    if (newSrc === currentAudioSrc) return;
+
+    if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
+
+    if (audioRef.current && isPlaying) {
+      const audio = audioRef.current;
+      fadeIntervalRef.current = setInterval(() => {
+        if (audio.volume > 0.008) {
+          audio.volume = Math.max(0, audio.volume - 0.008);
+        } else {
+          clearInterval(fadeIntervalRef.current);
+          audio.volume = 0;
+          if (!newSrc) audio.pause();
+          setCurrentAudioSrc(newSrc);
+        }
+      }, 50);
+    } else {
+      setCurrentAudioSrc(newSrc);
+    }
+  }, [activeTab, isPlaying, currentAudioSrc]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      if (!currentAudioSrc) {
+        audioRef.current.pause();
+        return;
+      }
+      audioRef.current.load();
+      if (isPlaying) {
+        audioRef.current.volume = 0;
+        audioRef.current.play().catch(e => console.log("Playback failed:", e));
+        
+        if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
+        fadeIntervalRef.current = setInterval(() => {
+          if (audioRef.current && audioRef.current.volume < 0.95) {
+            audioRef.current.volume = Math.min(1, audioRef.current.volume + 0.05);
+          } else {
+            clearInterval(fadeIntervalRef.current);
+            if (audioRef.current) audioRef.current.volume = 1;
+          }
+        }, 50);
+      } else {
+        audioRef.current.volume = 1;
+      }
+    }
+  }, [currentAudioSrc]);
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
+      if (isPlaying) {
+        audioRef.current.pause();
+        audioRef.current.volume = 1;
+        setIsPlaying(false);
+      } else {
+        setIsPlaying(true);
+        audioRef.current.volume = 1;
+        if (!currentAudioSrc) return;
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            setIsPlaying(true);
+          }).catch(error => {
+            console.error("Audio playback failed:", error);
+            setIsPlaying(false);
+          });
+        } else {
+          setIsPlaying(true);
+        }
+      }
+    }
+  };
   const [currentCard, setCurrentCard] = useState(0);
   const [subImageIndex, setSubImageIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -205,6 +332,7 @@ export default function App() {
   const [timeElapsed, setTimeElapsed] = useState({ years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [isCelebration, setIsCelebration] = useState(false);
   const celebrationTriggered = useRef(false);
+  const [showAnniversaryPopup, setShowAnniversaryPopup] = useState(false);
 
   // Cycle through extra images for a cinematic, buttery smooth feel
   useEffect(() => {
@@ -219,22 +347,25 @@ export default function App() {
     setIsFlipped(false);
   }, [currentCard]);
 
-  // Anniversary Logic: May 13, 2025, 07:45 AM
+  // Anniversary Logic: May 13, 2026, 07:45 AM
   useEffect(() => {
     const startDate = new Date('2025-05-13T07:45:00');
+    const targetDate = new Date('2026-05-13T07:45:00');
     
+    const urlParams = new URLSearchParams(window.location.search);
+    const isAnniversaryLink = urlParams.get('msg') === 'anniversary';
+
     const updateTimer = () => {
       const now = new Date();
       const diff = now.getTime() - startDate.getTime();
 
-      // Check for 1 Year Anniversary Celebration (May 13, 2026, 07:45 AM)
-      // Note: Month is 4 (May), Hour 7, Minute 45
-      const isAnniversaryDay = now.getMonth() === 4 && now.getDate() === 13 && now.getFullYear() === 2026;
-      const isAnniversaryMinute = isAnniversaryDay && now.getHours() === 7 && now.getMinutes() === 45;
+      const isPastAnniversary = now.getTime() >= targetDate.getTime();
 
-      if (isAnniversaryMinute && !celebrationTriggered.current) {
+      if ((isPastAnniversary || isAnniversaryLink) && !celebrationTriggered.current) {
         setIsCelebration(true);
+        setShowAnniversaryPopup(true);
         celebrationTriggered.current = true;
+        playSoftFirecracker();
         
         // Launch fireworks!
         const duration = 60 * 1000;
@@ -254,24 +385,36 @@ export default function App() {
           confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
           confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
         }, 250);
-      } else if (!isAnniversaryMinute && celebrationTriggered.current) {
-        setIsCelebration(false);
-        celebrationTriggered.current = false;
       }
 
-      let seconds = Math.floor(diff / 1000);
-      let minutes = Math.floor(seconds / 60);
-      let hours = Math.floor(minutes / 60);
-      let days = Math.floor(hours / 24);
+      let years = now.getFullYear() - startDate.getFullYear();
+      let months = now.getMonth() - startDate.getMonth();
+      let days = now.getDate() - startDate.getDate();
+      let hours = now.getHours() - startDate.getHours();
+      let minutes = now.getMinutes() - startDate.getMinutes();
+      let seconds = now.getSeconds() - startDate.getSeconds();
 
-      // Simple calculation for years and months (approximate)
-      const years = Math.floor(days / 365);
-      days %= 365;
-      const months = Math.floor(days / 30);
-      days %= 30;
-      hours %= 24;
-      minutes %= 60;
-      seconds %= 60;
+      if (seconds < 0) {
+        minutes--;
+        seconds += 60;
+      }
+      if (minutes < 0) {
+        hours--;
+        minutes += 60;
+      }
+      if (hours < 0) {
+        days--;
+        hours += 24;
+      }
+      if (days < 0) {
+        months--;
+        const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
 
       setTimeElapsed({ years, months, days, hours, minutes, seconds });
     };
@@ -333,6 +476,7 @@ export default function App() {
 
   const handleYesClick = () => {
     setProposalStatus('accepted');
+    playSoftFirecracker();
     confetti({
       particleCount: 150,
       spread: 70,
@@ -361,6 +505,93 @@ export default function App() {
   return (
     <div className="h-[100dvh] bg-[#fdf2f2] font-sans text-gray-900 overflow-hidden flex flex-col selection:bg-rose-200">
       <FloatingHearts />
+      
+      {/* Anniversary Message Popup */}
+      <AnimatePresence>
+        {showAnniversaryPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-gray-900/40 backdrop-blur-lg"
+          >
+            <motion.div 
+              initial={{ y: 50, scale: 0.9, opacity: 0 }}
+              animate={{ 
+                y: [0, -8, 0], 
+                scale: 1, 
+                opacity: 1,
+              }}
+              transition={{ 
+                y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                scale: { type: "spring", bounce: 0.4, duration: 0.8 },
+                opacity: { duration: 0.3 }
+              }}
+              className="bg-white/80 backdrop-blur-xl p-7 sm:p-10 rounded-[2.5rem] shadow-[0_20px_60px_-10px_rgba(255,20,147,0.3),0_0_0_1px_rgba(255,255,255,0.6)_inset] max-w-[92%] sm:max-w-lg w-full text-center relative overflow-hidden"
+            >
+              {/* Decorative background glow inside popup */}
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-pink-300 rounded-full blur-[60px] opacity-50 mix-blend-multiply pointer-events-none" />
+              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-rose-300 rounded-full blur-[60px] opacity-50 mix-blend-multiply pointer-events-none" />
+
+              <button 
+                onClick={() => setShowAnniversaryPopup(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-rose-500 bg-white/50 backdrop-blur-md rounded-full transition-all w-8 h-8 flex items-center justify-center z-10"
+                aria-label="Close"
+              >
+                <X size={18} strokeWidth={2.5} />
+              </button>
+              
+              <div className="relative z-10">
+                <div className="mb-5 sm:mb-6 flex justify-center">
+                  <div className="h-16 w-16 sm:h-20 sm:w-20 bg-gradient-to-br from-rose-100 to-pink-100 rounded-full flex items-center justify-center shadow-[0_8px_16px_rgba(255,20,147,0.1),0_0_0_4px_rgba(255,255,255,0.5)_inset]">
+                    <motion.div animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
+                      <Heart className="text-rose-500 w-8 h-8 sm:w-10 sm:h-10 drop-shadow-sm" fill="currentColor" />
+                    </motion.div>
+                  </div>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600 mb-3 sm:mb-4 font-serif leading-tight px-2">
+                  365 Days of Us, Munuuu
+                </h2>
+                <p className="text-[14px] sm:text-[16px] text-gray-700/90 leading-relaxed mb-7 sm:mb-8 font-medium px-1 sm:px-4">
+                  Exactly one year ago, at this very minute, you made me the happiest person. Every single day since then has been a blessing. Happy 1st Anniversary, my love, My Kolija, My Everything ❤️
+                </p>
+                <button
+                  onClick={() => setShowAnniversaryPopup(false)}
+                  className="w-full sm:w-[80%] py-3.5 sm:py-4 bg-gradient-to-r from-rose-400 to-pink-500 text-white text-[15px] sm:text-base rounded-full font-bold shadow-[0_8px_20px_-6px_rgba(255,20,147,0.5)] transition-all hover:scale-[1.03] active:scale-[0.97]"
+                >
+                  I Love You Too! 💕
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {/* Background Audio Source */}
+      <audio 
+        ref={audioRef}
+        loop
+        className="hidden"
+        src={currentAudioSrc || undefined}
+      />
+
+      {/* Music Toggle Button */}
+      <div className="fixed bottom-20 right-4 z-50 pointer-events-auto">
+        {isPlaying && (
+          <span className="absolute inset-0 rounded-full bg-rose-400 opacity-40 animate-ping" style={{ animationDuration: '2.5s' }}></span>
+        )}
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1 }}
+          onClick={togglePlay}
+          className="relative w-10 h-10 bg-white/70 backdrop-blur-xl rounded-full flex items-center justify-center shadow-[0_8px_30px_rgba(244,63,94,0.3)] border border-white/80 text-rose-500 hover:bg-white hover:scale-105 active:scale-95 transition-all"
+        >
+          <motion.div animate={isPlaying ? { scale: [1, 1.15, 1], rotate: [0, -5, 5, 0] } : {}} transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}>
+            {isPlaying ? <Volume2 size={18} /> : <VolumeX size={18} />}
+          </motion.div>
+        </motion.button>
+      </div>
  
       {/* Floating Header - Frameless & Minimal */}
       <header className="fixed top-4 left-0 right-0 z-50 px-6 flex items-center justify-between max-w-lg mx-auto pointer-events-none">
@@ -787,19 +1018,19 @@ export default function App() {
                 className="text-center px-4 pb-24 pt-8 flex flex-col items-center w-full my-auto"
               >
                 {/* Confetti / Celebration Header */}
-                <div className="mb-4 flex justify-center gap-4 shrink-0">
+                <div className="mt-8 mb-2 flex justify-center gap-4 shrink-0 z-10 relative">
                   <motion.div animate={{ rotate: [0, 360] }} transition={{ duration: 10, repeat: Infinity, ease: "linear" }}>
-                    <div className="text-4xl sm:text-5xl">✨</div>
+                    <div className="text-4xl sm:text-5xl drop-shadow-md">✨</div>
                   </motion.div>
                   <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Infinity }}>
-                    <div className="text-5xl sm:text-6xl">💖</div>
+                    <div className="text-5xl sm:text-6xl drop-shadow-lg">💖</div>
                   </motion.div>
                   <motion.div animate={{ rotate: [360, 0] }} transition={{ duration: 10, repeat: Infinity, ease: "linear" }}>
-                    <div className="text-4xl sm:text-5xl">✨</div>
+                    <div className="text-4xl sm:text-5xl drop-shadow-md">✨</div>
                   </motion.div>
                 </div>
 
-                <div className="flex flex-col items-center shrink-0 mb-2 relative z-50 mt-4">
+                <div className="flex flex-col items-center shrink-0 mb-2 relative z-50 mt-2">
                   {/* Celebration Speech Bubble - Fixed Visibility */}
                   <div className="bg-white px-6 py-3 rounded-3xl shadow-xl border-2 border-rose-200 z-[60] text-center relative mb-4 transform transition-all duration-500 scale-100 hover:scale-105">
                     <p className="text-rose-600 font-bold italic text-sm">
@@ -910,15 +1141,19 @@ export default function App() {
 function NavButton({ active, icon: Icon, onClick, label }: { active: boolean, icon: any, onClick: () => void, label: string }) {
   const [showLabel, setShowLabel] = useState(false);
   const timeoutRef = useRef<any>(null);
+  const isMounted = useRef(false);
 
   useEffect(() => {
     if (active) {
-      setShowLabel(true);
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => setShowLabel(false), 2000);
+      if (isMounted.current) {
+        setShowLabel(true);
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => setShowLabel(false), 2000);
+      }
     } else {
       setShowLabel(false);
     }
+    isMounted.current = true;
   }, [active]);
 
   const handleClick = () => {
