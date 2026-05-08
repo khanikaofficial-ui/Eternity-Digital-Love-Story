@@ -41,7 +41,7 @@ const TIMELINE_EVENTS = [
   },
   {
     title: "The Strength in Your Eyes 👁️✨",
-    date: "August 12, 2025",
+    date: "April 7, 2026",
     description: "There's a magic in the way you look at me. It's not just love; it's a belief that makes me feel like I can conquer the world.",
     icon: Heart,
     image: "https://i.postimg.cc/658PJ6RX/8e92dce2-7165-4a13-a234-1e8f935dc272.jpg",
